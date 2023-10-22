@@ -1,6 +1,6 @@
 * text=auto eol=lf
 
-*.php diff=php
+*.php linguist-detectable=true
 *.js linguist-detectable=false
 *.blade.php linguist-detectable=false
 *.html linguist-detectable=false
