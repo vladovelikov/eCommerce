@@ -1,13 +1,13 @@
 * text=auto eol=lf
 
 *.php linguist-detectable=true
-*.js linguist-detectable=false
-*.blade.php linguist-detectable=false
-*.html linguist-detectable=false
-*.css linguist-detectable=false
-*.scss linguist-detectable=false
-*.less linguist-detectable=false
-*.md linguist-detectable=false
+*.js linguist-vendored
+*.blade.php linguist-vendored
+*.html linguist-vendored
+*.css linguist-vendored
+*.scss linguist-vendored
+*.md linguist-vendored
+*.less linguist-vendored
 
 /.github export-ignore
 CHANGELOG.md export-ignore
