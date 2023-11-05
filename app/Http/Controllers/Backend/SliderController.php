@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Backend;
 
+use App\DataTables\SliderDataTable;
 use App\Http\Controllers\Controller;
 use App\Models\Slider;
 use App\Traits\ImageUploadTrait;
@@ -14,9 +15,9 @@ class SliderController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(SliderDataTable $dataTable)
     {
-        return view('admin.slider.index');
+        return $dataTable->render('admin.slider.index');
     }
 
     /**
@@ -39,7 +40,7 @@ class SliderController extends Controller
             'button_url' => ['url'],
             'order' => ['required', 'integer'],
             'status' => ['required'],
-            'background_image' => ['required', 'image', 'max:2000']
+            'background_image' => ['nullable', 'image', 'max:2000']
         ]);
 
         $slider = new Slider();
@@ -75,7 +76,9 @@ class SliderController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $slider = Slider::findOrFail($id);
+
+        return view('admin.slider.edit', compact('slider'));
     }
 
     /**
@@ -83,7 +86,36 @@ class SliderController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $request->validate([
+            'title' => ['required', 'string', 'max:200'],
+            'type' => ['string', 'max:200'],
+            'starting_price' => ['max:200'],
+            'button_url' => ['url'],
+            'order' => ['required', 'integer'],
+            'status' => ['required'],
+            'background_image' => ['nullable', 'image', 'max:2000']
+        ]);
+
+        $slider = Slider::findOrFail($id);
+        $imageOldPath = $slider->image;
+
+        $imagePath = $this->uploadImage($request, 'background_image', 'uploads', $imageOldPath);
+
+        $slider->type = $request->type;
+        $slider->title = $request->title;
+        $slider->starting_price = $request->starting_price;
+        $slider->button_url = $request->button_url;
+        $slider->order = $request->order;
+        $slider->status = $request->status;
+        $slider->image = $imagePath ?: $imageOldPath;
+
+        $slider->save();
+
+        toastr()->success('Slider updated successfully.');
+
+        return redirect()->route('admin.slider.index');
+
+
     }
 
     /**

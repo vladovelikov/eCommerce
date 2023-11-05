@@ -31,7 +31,7 @@
 {{--                    <li><a class="nav-link" href="layout-top-navigation.html">Top Navigation</a></li>--}}
 {{--                </ul>--}}
 {{--            </li>--}}
-            <li><a class="nav-link" href="blank.html"><i class="far fa-square"></i> <span>Blank Page</span></a></li>
+{{--            <li><a class="nav-link" href="blank.html"><i class="far fa-square"></i> <span>Blank Page</span></a></li>--}}
 
         </ul>
     </aside>
