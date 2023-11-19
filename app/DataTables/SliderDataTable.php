@@ -24,14 +24,23 @@ class SliderDataTable extends DataTable
         return (new EloquentDataTable($query))
             ->addColumn('action', function ($query) {
                 $editBtn = "<a href='" . route('admin.slider.edit', $query->id) . "' class='btn btn-primary'>Edit</a>";
-                $deleteBtn = "<a href='" . route('admin.slider.destroy', $query->id) . "' class='btn btn-danger ml-2'>Delete</a>";
+                $deleteBtn = "<a href='" . route('admin.slider.destroy', $query->id) . "' class='btn btn-danger ml-2 delete-item'>Delete</a>";
 
                 return $editBtn . $deleteBtn;
             })
             ->addColumn('image', function ($query) {
                 return $image = "<img width='100px' src='" . asset($query->image) . "'>";
             })
-            ->rawColumns(['action', 'image'])
+            ->addColumn('status', function ($query) {
+                $active = "<i class='badge badge-success'>Active</i>";
+                $inactive = "<i class='badge badge-danger'>Inactive</i>";
+                if ($query->status == 1) {
+                    return $active;
+                } else {
+                    return $inactive;
+                }
+            })
+            ->rawColumns(['action', 'image', 'status'])
             ->setRowId('id');
     }
 
@@ -71,9 +80,11 @@ class SliderDataTable extends DataTable
     public function getColumns(): array
     {
         return [
-            Column::make('id'),
+            Column::make('order'),
             Column::make('image'),
             Column::make('title'),
+            Column::make('type'),
+            Column::make('status'),
             Column::computed('action')
                 ->exportable(false)
                 ->printable(false)
