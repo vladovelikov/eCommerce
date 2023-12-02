@@ -109,7 +109,7 @@
     SCROLL BUTTON  END
 ==============================-->
 
-{{asset('frontend/assets/js/main.js')}}
+{{--{{asset('frontend/assets/js/main.js')}}--}}
 
 <!--jquery library js-->
 <script src="{{asset('frontend/assets/js/jquery-3.6.0.min.js')}}"></script>
