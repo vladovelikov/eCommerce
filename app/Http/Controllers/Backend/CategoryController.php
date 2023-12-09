@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Backend;
 
 use App\DataTables\CategoryDataTable;
 use App\Http\Controllers\Controller;
+use App\Models\Category;
 use Illuminate\Http\Request;
 
 class CategoryController extends Controller
@@ -29,7 +30,22 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            "icon" => ["required", "not_in:empty"],
+            "name" => ["required", "max: 200", "unique:categories,name"],
+            "status" => ["required"]
+        ]);
+
+        $category = new Category();
+        $category->icon = $request->icon;
+        $category->name = $request->name;
+        $category->status = $request->status;
+
+        $category->save();
+
+        toastr('Created successfully!', 'success');
+
+        return redirect()->route('admin.category.index');
     }
 
     /**
@@ -45,7 +61,9 @@ class CategoryController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $category = Category::findOrFail($id);
+
+        return view('admin.category.edit', compact('category'));
     }
 
     /**
@@ -53,7 +71,36 @@ class CategoryController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $request->validate([
+            "icon" => ["required", "not_in:empty"],
+            "name" => ["required", "max: 200", "unique:categories,name," . $id],
+            "status" => ["required"]
+        ]);
+
+        $category = Category::findOrFail($id);
+        $category->icon = $request->icon;
+        $category->name = $request->name;
+        $category->status = $request->status;
+
+        $category->save();
+
+        toastr('Updated successfully!', 'success');
+
+        return redirect()->route('admin.category.index');
+    }
+
+    /**
+     * Update the category status.
+     */
+    public function updateStatus(Request $request)
+    {
+        $category = Category::findOrFail($request->id);
+        $category->status = $request->status == 'true' ? 1 : 0;
+        $category->save();
+
+        return response([
+            'message' => 'Category status updated successfully'
+        ]);
     }
 
     /**
@@ -61,6 +108,12 @@ class CategoryController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $category = Category::findOrFail($id);
+        $category->delete();
+
+        return response([
+            'status' => 'success',
+            'message' => 'Category deleted successfully!'
+        ]);
     }
 }

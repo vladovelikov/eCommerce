@@ -19,18 +19,19 @@
                     <div class="card">
                         <div class="card-header">
                             <h4>Create Category</h4>
-                            <div class="card-header-action">
-                                <a href="{{route('admin.category.create')}}" class="btn btn-primary">Save</a>
-                            </div>
                         </div>
                         <div class="card-body">
-                            <form action="" method="POST">
+                            <form action="{{route('admin.category.store')}}" method="POST">
                                 @csrf
                                 <div class="form-group">
                                     <label>Icon</label>
                                     <div>
-                                        <button class="btn btn-primary" data-selected-class="btn-danger" data-unselected-class="btn-info" role="iconpicker"></button>
+                                        <button name="icon" class="btn btn-primary" data-selected-class="btn-danger" data-unselected-class="btn-info" role="iconpicker"></button>
                                     </div>
+                                </div>
+                                <div class="form-group">
+                                    <label>Name</label>
+                                    <input type="text" name="name" class="form-control">
                                 </div>
                                 <div class="form-group">
                                     <label>Status</label>
