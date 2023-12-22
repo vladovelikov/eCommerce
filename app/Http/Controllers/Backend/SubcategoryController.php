@@ -99,7 +99,13 @@ class SubcategoryController extends Controller
      */
     public function updateStatus(Request $request)
     {
+        $subcategory = Subcategory::findOrFail($request->id);
+        $subcategory->status = $request->status == 'true' ? 1 : 0;
+        $subcategory->save();
 
+        return response([
+            'message' => 'Subcategory status updated successfully'
+        ]);
     }
 
     /**
@@ -107,6 +113,12 @@ class SubcategoryController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $subcategory = Subcategory::findOrFail($id);
+        $subcategory->delete();
+
+        return response([
+            'status' => 'success',
+            'message' => 'Deleted successfully!'
+        ]);
     }
 }

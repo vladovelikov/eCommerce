@@ -25,7 +25,7 @@
                                 @csrf
                                 @method("PUT")
                                 <div class="form-group">
-                                    <label>Subcategory</label>
+                                    <label>Category</label>
                                     <select id="status" name="category" class="form-control">
                                         @foreach($categories as $category)
                                             <option {{$category->id == $subcategory->category_id ? 'selected' : ''}} value="{{$category->id}}">{{$category->name}}</option>

@@ -18,6 +18,7 @@
                     <li><a class="nav-link" href="{{route('admin.slider.index')}}">Slider</a></li>
                     <li><a class="nav-link" href="{{route('admin.category.index')}}">Categories</a></li>
                     <li><a class="nav-link" href="{{route('admin.subcategory.index')}}">Subcategories</a></li>
+                    <li><a class="nav-link" href="{{route('admin.child-category.index')}}">Child categories</a></li>
                 </ul>
             </li>
 
