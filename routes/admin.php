@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Backend\AdminController;
+use App\Http\Controllers\Backend\BrandController;
 use App\Http\Controllers\Backend\CategoryController;
 use App\Http\Controllers\Backend\ChildCategoryController;
 use App\Http\Controllers\Backend\ProfileController;
@@ -48,3 +49,8 @@ Route::resource('subcategory', SubcategoryController::class);
 Route::put('update-child-category-status', [ChildCategoryController::class, 'updateStatus'])->name('child-category.update.status');
 Route::get('get-subcategories', [ChildCategoryController::class, 'getSubcategories'])->name('get-subcategories');
 Route::resource('child-category', ChildCategoryController::class);
+
+
+/** Brands Routes */
+Route::put('brand/update-status', [BrandController::class, 'updateStatus'])->name('brand.update-status');
+Route::resource('brand', BrandController::class);

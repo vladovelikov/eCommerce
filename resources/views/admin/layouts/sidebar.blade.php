@@ -12,13 +12,20 @@
                 <a href="{{route('admin.dashboard')}}" class="nav-link"><i class="fas fa-fire"></i><span>Dashboard</span></a>
             </li>
             <li class="menu-header">Starter</li>
-            <li class="dropdown">
+            <li class="dropdown {{ setActive([
+                'admin.slider.*',
+                'admin.category.*',
+                'admin.subcategory.*',
+                'admin.child-category.*',
+                'admin.brand.*'
+            ]) }}">
                 <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i class="fas fa-columns"></i> <span>Manage Website</span></a>
                 <ul class="dropdown-menu">
-                    <li><a class="nav-link" href="{{route('admin.slider.index')}}">Slider</a></li>
-                    <li><a class="nav-link" href="{{route('admin.category.index')}}">Categories</a></li>
-                    <li><a class="nav-link" href="{{route('admin.subcategory.index')}}">Subcategories</a></li>
-                    <li><a class="nav-link" href="{{route('admin.child-category.index')}}">Child categories</a></li>
+                    <li class="{{ setActive(['admin.slider.*']) }}"><a class="nav-link" href="{{route('admin.slider.index')}}">Slider</a></li>
+                    <li class="{{ setActive(['admin.category.*']) }}"><a class="nav-link" href="{{route('admin.category.index')}}">Categories</a></li>
+                    <li class="{{ setActive(['admin.subcategory.*']) }}"><a class="nav-link" href="{{route('admin.subcategory.index')}}">Subcategories</a></li>
+                    <li class="{{ setActive(['admin.child-category.*']) }}"><a class="nav-link" href="{{route('admin.child-category.index')}}">Child categories</a></li>
+                    <li class="{{ setActive(['admin.brand.*']) }}"><a class="nav-link" href="{{route('admin.brand.index')}}">Brands</a></li>
                 </ul>
             </li>
 

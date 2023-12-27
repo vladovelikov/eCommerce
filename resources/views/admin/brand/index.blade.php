@@ -5,7 +5,7 @@
     <!-- Main Content -->
     <section class="section">
         <div class="section-header">
-            <h1>Child Category</h1>
+            <h1>Brand</h1>
             <div class="section-header-breadcrumb">
                 <div class="breadcrumb-item active"><a href="#">Dashboard</a></div>
                 <div class="breadcrumb-item"><a href="#">Components</a></div>
@@ -18,9 +18,9 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header">
-                            <h4>All Child Categories</h4>
+                            <h4>All Brands</h4>
                             <div class="card-header-action">
-                                <a href="{{route('admin.child-category.create')}}" class="btn btn-primary">Create Child Category</a>
+                                <a href="{{route('admin.brand.create')}}" class="btn btn-primary">Create Brand</a>
                             </div>
                         </div>
                         <div class="card-body">
@@ -44,7 +44,7 @@
                 let id = $(this).data('id');
 
                 $.ajax({
-                    url: "{{route('admin.child-category.update.status')}}",
+                    url: "{{route('admin.brand.update-status')}}",
                     method: 'PUT',
                     data: {
                         id: id,
@@ -54,9 +54,10 @@
                         toastr.success(data.message);
                     },
                     error: function () {
-                        toastr.error('Error while updating category status!');
+                        toastr.error('Error while updating brand status!');
                     }
                 });
+
             })
         });
     </script>

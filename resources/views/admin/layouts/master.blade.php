@@ -125,16 +125,17 @@
                             if (data.status == 'success') {
                                 Swal.fire(
                                     'Deleted!',
-                                    data.message
+                                    data.message,
+                                    'success'
                                 )
+                                window.location.reload();
                             } else if (data.status == 'error') {
                                 Swal.fire(
                                     'Unable to proceed with deleting!',
-                                    data.message
+                                    data.message,
+                                    'error'
                                 )
                             }
-
-                            window.location.reload();
                         },
                         error: function (xhr, status, error) {
                             console.log(error);
