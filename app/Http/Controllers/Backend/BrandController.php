@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Backend;
 use App\DataTables\BrandDataTable;
 use App\Http\Controllers\Controller;
 use App\Models\Brand;
+use App\Models\Category;
 use App\Traits\ImageUploadTrait;
 use Illuminate\Http\Request;
 
@@ -96,6 +97,20 @@ class BrandController extends Controller
         toastr('Updated successfully!', 'success');
 
         return redirect()->route('admin.brand.index');
+    }
+
+    /**
+     * Update the brand status.
+     */
+    public function updateStatus(Request $request)
+    {
+        $brand = Brand::findOrFail($request->id);
+        $brand->status = $request->status == 'true' ? 1 : 0;
+        $brand->save();
+
+        return response([
+            'message' => 'Brand status updated successfully'
+        ]);
     }
 
     /**

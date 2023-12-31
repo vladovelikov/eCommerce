@@ -17,7 +17,8 @@
                 'admin.category.*',
                 'admin.subcategory.*',
                 'admin.child-category.*',
-                'admin.brand.*'
+                'admin.brand.*',
+                'admin.vendor-profile.*'
             ]) }}">
                 <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i class="fas fa-columns"></i> <span>Manage Website</span></a>
                 <ul class="dropdown-menu">
@@ -26,6 +27,7 @@
                     <li class="{{ setActive(['admin.subcategory.*']) }}"><a class="nav-link" href="{{route('admin.subcategory.index')}}">Subcategories</a></li>
                     <li class="{{ setActive(['admin.child-category.*']) }}"><a class="nav-link" href="{{route('admin.child-category.index')}}">Child categories</a></li>
                     <li class="{{ setActive(['admin.brand.*']) }}"><a class="nav-link" href="{{route('admin.brand.index')}}">Brands</a></li>
+                    <li class="{{ setActive(['admin.vendor-profile.*']) }}"><a class="nav-link" href="{{route('admin.vendor-profile.index')}}">Vendor Profile</a></li>
                 </ul>
             </li>
 
