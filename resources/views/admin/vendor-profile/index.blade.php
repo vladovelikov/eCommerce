@@ -24,38 +24,43 @@
                             <form action="{{route('admin.vendor-profile.store')}}" method="POST" enctype="multipart/form-data">
                                 @csrf
                                 <div class="form-group">
+                                    <label>Preview</label>
+                                    <br>
+                                    <img src="{{asset($profile->banner)}}" width="200px" alt="">
+                                </div>
+                                <div class="form-group">
                                     <label>Banner</label>
                                     <input type="file" name="banner" class="form-control">
                                 </div>
                                 <div class="form-group">
                                     <label>Phone</label>
-                                    <input type="text" name="phone" class="form-control" value="{{old('phone')}}">
+                                    <input type="text" name="phone" class="form-control" value="{{$profile->phone}}">
                                 </div>
                                 <div class="form-group">
                                     <label>Email</label>
-                                    <input type="text" name="email" class="form-control" value="{{old('email')}}">
+                                    <input type="text" name="email" class="form-control" value="{{$profile->email}}">
                                 </div>
                                 <div class="form-group">
                                     <label>Address</label>
-                                    <input type="text" name="address" class="form-control" value="{{old('address')}}">
+                                    <input type="text" name="address" class="form-control" value="{{$profile->address}}">
                                 </div>
                                 <div class="form-group">
                                     <label>Description</label>
-                                    <input type="text" name="description" class="form-control" value="{{old('description')}}">
+                                    <input type="text" name="description" class="form-control" value="{{$profile->description}}">
                                 </div>
                                 <div class="form-group">
                                     <label>Facebook</label>
-                                    <input type="text" name="fb_link" class="form-control" value="{{old('fb_link')}}">
+                                    <input type="text" name="fb_link" class="form-control" value="{{$profile->fb_link}}">
                                 </div>
                                 <div class="form-group">
                                     <label>Twitter</label>
-                                    <input type="text" name="tw_link" class="form-control" value="{{old('tw_link')}}">
+                                    <input type="text" name="tw_link" class="form-control" value="{{$profile->tw_link}}">
                                 </div>
                                 <div class="form-group">
                                     <label>Instagram</label>
-                                    <input type="text" name="insta_link" class="form-control" value="{{old('insta_link')}}">
+                                    <input type="text" name="insta_link" class="form-control" value="{{$profile->insta_link}}">
                                 </div>
-                                <button type="submit" class="btn btn-primary">Create</button>
+                                <button type="submit" class="btn btn-primary">Update</button>
                             </form>
                         </div>
                     </div>
