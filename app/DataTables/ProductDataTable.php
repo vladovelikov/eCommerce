@@ -44,11 +44,14 @@ class ProductDataTable extends DataTable
                     case 'new_arrival':
                         return "<i class='badge badge-success'>New Arrival</i>";
                         break;
-                    case 'featured':
+                    case 'featured_product':
                         return "<i class='badge badge-warning'>Featured</i>";
                         break;
                     case 'top_product':
                         return "<i class='badge badge-info'>Top Product</i>";
+                        break;
+                    case 'best_product':
+                        return "<i class='badge badge-info'>Best Product</i>";
                         break;
                     default:
                         return "<i class='badge badge-danger'>None</i>";

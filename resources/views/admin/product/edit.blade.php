@@ -21,9 +21,10 @@
                             <h4>Update Product</h4>
                         </div>
                         <div class="card-body">
-                            <form action="{{route('admin.products.store')}}" method="POST"
+                            <form action="{{route('admin.products.update', $product->id)}}" method="POST"
                                   enctype="multipart/form-data">
                                 @csrf
+                                @method('PUT')
                                 <div class="form-group">
                                     <label>Preview</label>
                                     <br>
@@ -122,40 +123,39 @@
                                 </div>
                                 <div class="form-group">
                                     <label>Short Description</label>
-                                    <textarea name="short_description" class="form-control">{{$product->short_description}}</textarea>
+                                    <textarea name="short_description" class="form-control">{!! $product->short_description !!}</textarea>
                                 </div>
                                 <div class="form-group">
                                     <label>Long Description</label>
-                                    <textarea name="long_description" class="form-control">{{$product->long_description}}</textarea>
+                                    <textarea name="long_description" class="form-control">{!! $product->long_description !!}</textarea>
                                 </div>
                                 <div class="form-group">
                                     <label>Product Type</label>
                                     <select id="status" name="product_type" class="form-control">
                                         <option value="">Select</option>
-                                        <option value="new_arrival">New Arrival</option>
-                                        <option value="featured_product">Featured</option>
-                                        <option value="best_product">Top Product</option>
+                                        <option {{$product->product_type == 'new_arrival' ? 'selected' : ''}} value="new_arrival">New Arrival</option>
+                                        <option {{$product->product_type == 'featured_product' ? 'selected' : ''}} value="featured_product">Featured</option>
+                                        <option {{$product->product_type == 'top_product' ? 'selected' : ''}} value="best_product">Top Product</option>
+                                        <option {{$product->product_type == 'best_product' ? 'selected' : ''}} value="best_product">Best Product</option>
                                     </select>
                                 </div>
                                 <div class="form-group">
                                     <label>SEO Title</label>
-                                    <input type="text" name="seo_title" class="form-control"
-                                           value="{{old('seo_title')}}">
+                                    <input type="text" name="seo_title" class="form-control" value="{{$product->seo_title}}">
                                 </div>
                                 <div class="form-group">
                                     <label>SEO Description</label>
-                                    <textarea name="seo_description" class="form-control"
-                                              value="{{old('seo_description')}}"></textarea>
+                                    <textarea name="seo_description" class="form-control">{{$product->seo_description}}</textarea>
                                 </div>
                                 <div class="form-group">
                                     <label>Status</label>
                                     <select id="status" name="status" class="form-control">
                                         <option value="">Select</option>
-                                        <option value="1">Active</option>
-                                        <option value="0">Inactive</option>
+                                        <option {{$product->status == 1 ? 'selected' : ''}} value="1">Active</option>
+                                        <option {{$product->status == 0 ? 'selected' : ''}} value="0">Inactive</option>
                                     </select>
                                 </div>
-                                <button type="submit" class="btn btn-primary">Create</button>
+                                <button type="submit" class="btn btn-primary">Update</button>
                             </form>
                         </div>
                     </div>
@@ -170,6 +170,7 @@
     <script>
         $(document).ready(function () {
             $('body').on('change', '.main-category', function (e) {
+                $('.child-category').html(`<option id="">Select</option>`);
                 let id = $(this).val();
 
                 $.ajax({
