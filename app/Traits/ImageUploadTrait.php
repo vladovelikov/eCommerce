@@ -41,6 +41,26 @@ trait ImageUploadTrait {
         }
     }
 
+    public function uploadMultipleImages(Request $request, $inputName, $path)
+    {
+        $imagesPaths = [];
+
+        if ($request->hasFile($inputName)) {
+            $images = $request->{$inputName};
+
+            foreach ($images as $image) {
+                $extension = $image->getClientOriginalExtension();
+                $imageName = 'media' . '_' . uniqid() . '.' . $extension;
+
+                $image->move(public_path($path), $imageName);
+
+                $imagesPaths[] = $path . '/' . $imageName;
+            }
+
+            return $imagesPaths;
+        }
+    }
+
     public function deleteImage($imagePath)
     {
         if (File::exists(public_path($imagePath))) {

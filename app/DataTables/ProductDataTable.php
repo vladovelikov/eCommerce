@@ -30,7 +30,8 @@ class ProductDataTable extends DataTable
                                 aria-haspopup='true' aria-expanded='false'><i class='fas fa-cog'></i>
                                 </button>
                                 <div class='dropdown-menu' x-placement='bottom-start' style='position: absolute; transform: translate3d(0px, 28px, 0px); top: 0px; left: 0px; will-change: transform;'>
-                                    <a class='dropdown-item has-icon' href='#' class='far fa-heart'>Another action</a>
+                                    <a class='dropdown-item has-icon' href='" . route('admin.products-image-gallery.index', ['product' => $query->id]) . "'><i class='far fa-heart'></i>Image Gallery</a>
+                                    <a class='dropdown-item has-icon' href='" . route('admin.products-variants.index', ['product' => $query->id]) . "'><i class='far fa-heart'></i>Variants</a>
                                 </div>
                             </div>";
 
