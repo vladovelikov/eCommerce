@@ -36,4 +36,29 @@
 
 @push('scripts')
     {{ $dataTable->scripts(attributes: ["type" => "module"]) }}
+
+    <script>
+        $(document).ready(function() {
+            $('body').on('click', '.change-status', function () {
+                let isChecked = $(this).is(':checked');
+                let id = $(this).data('id');
+
+                $.ajax({
+                    url: "{{route('admin.products-variants.update-status')}}",
+                    method: 'PUT',
+                    data: {
+                        id: id,
+                        status: isChecked
+                    },
+                    success: function(data) {
+                        toastr.success(data.message);
+                    },
+                    error: function () {
+                        toastr.error('Error while updating product variant status!');
+                    }
+                });
+
+            })
+        });
+    </script>
 @endpush

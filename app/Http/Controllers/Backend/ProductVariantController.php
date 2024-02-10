@@ -63,7 +63,9 @@ class ProductVariantController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $productVariant = ProductVariant::findOrFail($id);
+
+        return view('admin.product.product-variant.edit', compact('productVariant'));
     }
 
     /**
@@ -71,7 +73,19 @@ class ProductVariantController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $request->validate([
+            'name' => ['required', 'max:200'],
+            'status' => ['required']
+        ]);
+
+        $productVariant = ProductVariant::findOrFail($id);
+        $productVariant->name = $request->name;
+        $productVariant->status = $request->status;
+        $productVariant->save();
+
+        toastr('Updated Successfully!', 'success', 'success');
+
+        return redirect()->route('admin.products-variants.index', ['product' => $productVariant->product_id]);
     }
 
     /**
@@ -79,6 +93,24 @@ class ProductVariantController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $productVariant = ProductVariant::findOrFail($id);
+        $productVariant->delete();
+
+        return response([
+            'status' => 'Success',
+            'message' => 'Product variant deleted successfully!'
+        ]);
+    }
+
+    public function updateStatus(Request $request)
+    {
+        $productVariant = ProductVariant::findOrFail($request->id);
+        $productVariant->status = $request->status == 'true' ? 1 : 0;
+        $productVariant->save();
+
+        return response([
+            'status' => 'Success',
+            'message' => 'Product variant status updated successfully'
+        ]);
     }
 }
