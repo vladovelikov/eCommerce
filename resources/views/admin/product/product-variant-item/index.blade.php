@@ -20,7 +20,7 @@
                         <div class="card-header">
                             <h4>All Product Variant Items</h4>
                             <div class="card-header-action">
-                                <a href="{{route('admin.product-variant-items.create', ['variantId' => $productVariant->id])}}" class="btn btn-primary">Create New</a>
+                                <a href="{{route('admin.product-variant-items.create', ['productId' => $product->id, 'variantId' => $productVariant->id])}}" class="btn btn-primary">Create New</a>
                             </div>
                         </div>
                         <div class="card-body">
