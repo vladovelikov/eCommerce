@@ -86,4 +86,8 @@ Route::resource('products-variants', ProductVariantController::class);
 
 Route::get('product-variant-items/{productId}/{variantId}', [ProductVariantItemController::class, 'index'])->name('product-variant-items.index');
 Route::get('product-variant-items/create/{productId}/{variantId}', [ProductVariantItemController::class, 'create'])->name('product-variant-items.create');
+Route::get('product-variant-items/{variantItemId}', [ProductVariantItemController::class, 'edit'])->name('product-variant-items.edit');
 Route::post('product-variant-items', [ProductVariantItemController::class, 'store'])->name('product-variant-items.store');
+Route::put('product-variant-items/updateStatus', [ProductVariantItemController::class, 'updateStatus'])->name('product-variant-items.update-status');
+Route::put('product-variant-items/update/{variantItemId}', [ProductVariantItemController::class, 'update'])->name('product-variant-items.update');
+Route::delete('product-variant-items/destroy/{variantItemId}', [ProductVariantItemController::class, 'destroy'])->name('product-variant-items.destroy');
