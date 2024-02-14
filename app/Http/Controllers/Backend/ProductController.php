@@ -8,6 +8,9 @@ use App\Models\Brand;
 use App\Models\Category;
 use App\Models\ChildCategory;
 use App\Models\Product;
+use App\Models\ProductImageGallery;
+use App\Models\ProductVariant;
+use App\Models\ProductVariantItem;
 use App\Models\Subcategory;
 use App\Traits\ImageUploadTrait;
 use Illuminate\Http\Request;
@@ -180,10 +183,50 @@ class ProductController extends Controller
     }
 
     /**
+     * Update the product status.
+     */
+    public function updateStatus(Request $request)
+    {
+        $product = Product::findOrFail($request->id);
+        $product->status = $request->status == 'true' ? 1 : 0;
+        $product->save();
+
+        return response([
+            'message' => 'Status updated successfully!'
+        ]);
+    }
+
+    /**
      * Remove the specified resource from storage.
      */
     public function destroy(string $id)
     {
-        //
+        $product = Product::findOrFail($id);
+        $productImages = ProductImageGallery::where('product_id', $product->id)->get();
+
+        //Delete the main product image
+        $this->deleteImage($product->image);
+
+        //Delete the product gallery images
+        foreach ($productImages as $productImage) {
+            $this->deleteImage($productImage->image);
+            $productImage->delete();
+        }
+
+        //Delete product variants if exist
+        $productVariants = ProductVariant::where('product_id', $product->id)->get();
+
+        foreach ($productVariants as $productVariant) {
+            $productVariant->productVariantItems()->delete();
+            $productVariant->delete();
+        }
+
+        $product->delete();
+
+        return response([
+            'status' => 'success',
+            'message' => 'Product deleted successfully!'
+        ]);
+
     }
 }
