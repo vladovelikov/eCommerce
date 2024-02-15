@@ -35,6 +35,9 @@ class ProductVariantItemController extends Controller
         return view('admin.product.product-variant-item.edit', compact('productVariantItem'));
     }
 
+    /**
+     * Update the product variant item status.
+     */
     public function updateStatus(Request $request)
     {
         $productVariantItem = ProductVariantItem::findOrFail($request->id);

@@ -29,6 +29,15 @@ class RouteServiceProvider extends ServiceProvider
     public const ADMIN_HOME = '/admin/dashboard';
 
     /**
+     * The path to your application's "vendor home" route.
+     *
+     * Typically, vendors are redirected here after authentication.
+     *
+     * @var string
+     */
+    public const VENDOR_HOME = '/vendor/dashboard';
+
+    /**
      * Define your route model bindings, pattern filters, and other route configuration.
      */
     public function boot(): void
@@ -49,6 +58,11 @@ class RouteServiceProvider extends ServiceProvider
                 ->prefix('admin')
                 ->as('admin.')
                 ->group(base_path('routes/admin.php'));
+
+            Route::middleware(['web', 'auth', 'role:vendor'])
+                ->prefix('vendor')
+                ->as('vendor.')
+                ->group(base_path('routes/vendor.php'));
         });
     }
 }

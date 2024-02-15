@@ -32,6 +32,10 @@
                                     <label>Banner</label>
                                     <input type="file" name="banner" class="form-control">
                                 </div>
+                                <div class="form-group wsus__input">
+                                    <label>Shop Name</label>
+                                    <input type="text" name="shop_name" class="form-control" value="{{$profile->shop_name}}">
+                                </div>
                                 <div class="form-group">
                                     <label>Phone</label>
                                     <input type="text" name="phone" class="form-control" value="{{$profile->phone}}">

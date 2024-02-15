@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers\Backend;
 
-use App\Http\Controllers\Controller;
 use App\Models\Vendor;
 use App\Traits\ImageUploadTrait;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 
-class AdminVendorProfileController extends Controller
+class VendorShopProfileController extends Controller
 {
 
     use ImageUploadTrait;
@@ -20,7 +20,7 @@ class AdminVendorProfileController extends Controller
     {
         $profile = Vendor::where('user_id', Auth::user()->id)->first();
 
-        return view('admin.vendor-profile.index', compact('profile'));
+        return view('vendor.shop-profile.index', compact('profile'));
     }
 
     /**
@@ -38,7 +38,7 @@ class AdminVendorProfileController extends Controller
     {
         $request->validate([
             'banner' => ['nullable', 'image', 'max:3000'],
-            'shop_name' => ['required', 'max:50'],
+            'shop_name' => ['required', 'max:200'],
             'phone' => ['required', 'max:50'],
             'email' => ['required', 'email'],
             'address' => ['required'],
