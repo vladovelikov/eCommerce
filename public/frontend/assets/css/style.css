@@ -9450,3 +9450,13 @@ a:not([href]):not([class]):hover {
 }
 
 /* extra css end here */
+
+.wsus__input {
+    margin-bottom: 5px;
+    margin-top: 5px;
+}
+
+.wsus__input input {
+    margin-top: 2px;
+    margin-bottom: 10px;
+}
