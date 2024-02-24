@@ -4,13 +4,21 @@ namespace App\Http\Controllers\Backend;
 
 use App\DataTables\ProductVariantItemDataTable;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreProductVariantItemRequest;
+use App\Http\Requests\UpdateProductVariantItemRequest;
 use App\Models\Product;
 use App\Models\ProductVariant;
 use App\Models\ProductVariantItem;
 use Illuminate\Http\Request;
+use App\Services\ProductVariantItemService;
 
 class ProductVariantItemController extends Controller
 {
+
+
+    public function __construct(private ProductVariantItemService $productVariantItemService)
+    {
+    }
 
     public function index(Request $request, ProductVariantItemDataTable $dataTable)
     {
@@ -40,30 +48,16 @@ class ProductVariantItemController extends Controller
      */
     public function updateStatus(Request $request)
     {
-        $productVariantItem = ProductVariantItem::findOrFail($request->id);
-        $productVariantItem->status = $request->status == 'true' ? 1 : 0;
-        $productVariantItem->save();
+        $this->productVariantItemService->updateVariantItemStatus($request->id, $request->status);
 
         return response([
             'message' => 'Status updated successfully!'
         ]);
     }
 
-    public function update(Request $request)
+    public function update(UpdateProductVariantItemRequest $request)
     {
-        $request->validate([
-            'item_name' => ['required', 'max:200'],
-            'price' => ['regex:/^[0-9]+(\.[0-9][0-9]?)?$/', 'required'],
-            'is_default' => ['required'],
-            'status' => ['required']
-        ]);
-
-        $productVariantItem = ProductVariantItem::findOrFail($request->variantItemId);
-        $productVariantItem->name = $request->item_name;
-        $productVariantItem->price = $request->price;
-        $productVariantItem->is_default = $request->is_default;
-        $productVariantItem->status = $request->status;
-        $productVariantItem->save();
+        $productVariantItem = $this->productVariantItemService->updateVariantItem($request->validated());
 
         toastr('Updated Successfully!', 'success', 'success');
 
@@ -71,23 +65,9 @@ class ProductVariantItemController extends Controller
             'variantId' => $productVariantItem->product_variant_id]);
     }
 
-    public function store(Request $request)
+    public function store(StoreProductVariantItemRequest $request)
     {
-        $request->validate([
-            'variant_id' => ['integer', 'required'],
-            'item_name' => ['required', 'max:200'],
-            'price' => ['regex:/^[0-9]+(\.[0-9][0-9]?)?$/', 'required'],
-            'is_default' => ['required'],
-            'status' => ['required']
-        ]);
-
-        $productVariantItem = new ProductVariantItem();
-        $productVariantItem->product_variant_id = $request->variant_id;
-        $productVariantItem->name = $request->item_name;
-        $productVariantItem->price = $request->price;
-        $productVariantItem->is_default = $request->is_default;
-        $productVariantItem->status = $request->status;
-        $productVariantItem->save();
+        $this->productVariantItemService->saveVariantItem($request->validated());
 
         toastr('Created Successfully!', 'success', 'success');
 

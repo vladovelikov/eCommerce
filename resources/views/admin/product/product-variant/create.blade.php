@@ -27,7 +27,7 @@
                                     <label>Name</label>
                                     <input type="text" name="name" class="form-control">
                                 </div>
-                                <input type="hidden" name="product" class="form-control" value="{{request()->product}}">
+                                <input type="hidden" name="product_id" class="form-control" value="{{request()->product}}">
                                 <div class="form-group">
                                     <label>Status</label>
                                     <select id="status" name="status" class="form-control">

@@ -7,48 +7,42 @@ use Illuminate\Support\Facades\File;
 
 trait ImageUploadTrait {
 
-    public function uploadImage(Request $request, $inputName, $path, $oldPath = null)
+    public function uploadImage($image, $path, $oldPath = null)
     {
-        if ($request->hasFile($inputName)) {
-            if ($oldPath && (File::exists(public_path($oldPath)))) {
-                File::delete(public_path($oldPath));
-            }
-
-            $image = $request->{$inputName};
-            $extension = $image->getClientOriginalExtension();
-            $imageName = 'media' . '_' . uniqid() . '.' . $extension;
-
-            $image->move(public_path($path), $imageName);
-
-            return $path . '/' . $imageName;
-        }
-    }
-
-    public function updateImage(Request $request, $inputName, $path, $oldPath = null)
-    {
-        if ($request->hasFile($inputName)) {
             if (File::exists(public_path($oldPath))) {
                 File::delete(public_path($oldPath));
             }
 
-            $image = $request->{$inputName};
             $extension = $image->getClientOriginalExtension();
             $imageName = 'media' . '_' . uniqid() . '.' . $extension;
 
             $image->move(public_path($path), $imageName);
 
             return $path . '/' . $imageName;
-        }
     }
 
-    public function uploadMultipleImages(Request $request, $inputName, $path)
+//    public function updateImage($image, $path, $oldPath = null)
+//    {
+//            if (File::exists(public_path($oldPath))) {
+//                File::delete(public_path($oldPath));
+//            }
+//
+//            $extension = $image->getClientOriginalExtension();
+//            $imageName = 'media' . '_' . uniqid() . '.' . $extension;
+//
+//            $image->move(public_path($path), $imageName);
+//
+//            return $path . '/' . $imageName;
+//
+//    }
+
+    public function uploadMultipleImages($imageGalleryData, $path)
     {
         $imagesPaths = [];
 
-        if ($request->hasFile($inputName)) {
-            $images = $request->{$inputName};
+        if (isset($imageGalleryData['images']) && $imageGalleryData['images']) {
 
-            foreach ($images as $image) {
+            foreach ($imageGalleryData['images'] as $image) {
                 $extension = $image->getClientOriginalExtension();
                 $imageName = 'media' . '_' . uniqid() . '.' . $extension;
 

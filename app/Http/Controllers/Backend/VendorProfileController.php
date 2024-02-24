@@ -3,12 +3,16 @@
 namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\File;
+use App\Http\Requests\UpdateUserPasswordRequest;
+use App\Http\Requests\UpdateUserRequest;
+use App\Services\UserService;
 
 class VendorProfileController extends Controller
 {
+
+    public function __construct(private UserService $userService)
+    {
+    }
 
     public function index()
     {
@@ -18,32 +22,9 @@ class VendorProfileController extends Controller
     /**
      * Update the vendor's properties.
      */
-    public function updateProfile(Request $request)
+    public function updateProfile(UpdateUserRequest $request)
     {
-        $request->validate([
-            'image' => ['image', 'max:2048'],
-            'name' => ['required', 'max:100'],
-            'email' => ['required', 'email', 'unique:users,email,' . Auth::user()->id],
-        ]);
-
-        $user = Auth::user();
-
-        if ($request->hasFile('image')) {
-            if (File::exists(public_path($user->image))) {
-                File::delete(public_path($user->image));
-            }
-
-            $image = $request->image;
-            $imageName = rand() . '_' . $image->getClientOriginalName();
-            $image->move(public_path('uploads'), $imageName);
-
-            $user->image = '/uploads/' . $imageName;
-        }
-
-        $user->name = $request->name;
-        $user->email = $request->email;
-
-        $user->save();
+        $this->userService->updateProfile($request);
 
         toastr()->success('Profile updated successfully.');
 
@@ -54,16 +35,9 @@ class VendorProfileController extends Controller
     /**
      * Update the vendor's password.
      */
-    public function updatePassword(Request $request)
+    public function updatePassword(UpdateUserPasswordRequest $request)
     {
-        $request->validate([
-            'current_password' => ['required', 'current_password'],
-            'password' => ['required', 'confirmed', 'min:8']
-        ]);
-
-        $request->user()->update([
-            'password' => bcrypt($request->password)
-        ]);
+        $this->userService->updatePassword($request);
 
         toastr()->success('Password changed successfully.');
 

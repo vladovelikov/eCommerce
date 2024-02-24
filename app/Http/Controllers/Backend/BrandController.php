@@ -4,14 +4,21 @@ namespace App\Http\Controllers\Backend;
 
 use App\DataTables\BrandDataTable;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreBrandRequest;
+use App\Http\Requests\UpdateBrandRequest;
 use App\Models\Brand;
 use App\Models\Category;
+use App\Services\BrandService;
 use App\Traits\ImageUploadTrait;
 use Illuminate\Http\Request;
 
 class BrandController extends Controller
 {
-    use ImageUploadTrait;
+
+    public function __construct(private BrandService $brandService)
+    {
+    }
+
 
     /**
      * Display a listing of the resource.
@@ -32,23 +39,9 @@ class BrandController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreBrandRequest $request)
     {
-        $request->validate([
-            'logo' => ['image', 'required', 'max:2000'],
-            'name' => ['required', 'max:200'],
-            'is_featured' => ['required'],
-            'status' => ['required']
-        ]);
-
-        $logoPath = $this->uploadImage($request, 'logo', 'uploads');
-
-        $brand = new Brand();
-        $brand->logo = $logoPath;
-        $brand->name = $request->name;
-        $brand->is_featured = $request->is_featured;
-        $brand->status = $request->status;
-        $brand->save();
+        $this->brandService->saveBrand($request->validated());
 
         toastr('Created successfully!', 'success');
 
@@ -76,23 +69,9 @@ class BrandController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UpdateBrandRequest $request, string $id)
     {
-        $request->validate([
-            'logo' => ['image', 'max:2000'],
-            'name' => ['required', 'max:200'],
-            'is_featured' => ['required'],
-            'status' => ['required']
-        ]);
-
-        $brand = Brand::findOrFail($id);
-        $logoPath = $this->updateImage($request, 'logo', 'uploads', $brand->logo);
-
-        $brand->logo = empty($logoPath) ? $brand->logo : $logoPath;
-        $brand->name = $request->name;
-        $brand->is_featured = $request->is_featured;
-        $brand->status = $request->status;
-        $brand->save();
+        $this->brandService->updateBrand($request->validated(), $id);
 
         toastr('Updated successfully!', 'success');
 
@@ -104,9 +83,7 @@ class BrandController extends Controller
      */
     public function updateStatus(Request $request)
     {
-        $brand = Brand::findOrFail($request->id);
-        $brand->status = $request->status == 'true' ? 1 : 0;
-        $brand->save();
+        $this->brandService->updateStatus($request->id, $request->status);
 
         return response([
             'message' => 'Brand status updated successfully'
@@ -118,9 +95,7 @@ class BrandController extends Controller
      */
     public function destroy(string $id)
     {
-        $brand = Brand::findOrFail($id);
-        $this->deleteImage($brand->logo);
-        $brand->delete();
+        $this->brandService->deleteBrand($id);
 
         return redirect()->route('admin.brand.index');
     }

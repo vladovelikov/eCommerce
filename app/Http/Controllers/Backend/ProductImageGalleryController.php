@@ -4,8 +4,10 @@ namespace App\Http\Controllers\Backend;
 
 use App\DataTables\ProductImageGalleryDataTable;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreProductImageGalleryRequest;
 use App\Models\Product;
 use App\Models\ProductImageGallery;
+use App\Services\ProductImageGalleryService;
 use App\Traits\ImageUploadTrait;
 use Illuminate\Http\Request;
 
@@ -13,6 +15,11 @@ class ProductImageGalleryController extends Controller
 {
 
     use ImageUploadTrait;
+
+    public function __construct(private ProductImageGalleryService $productImageGalleryService)
+    {
+    }
+
 
     /**
      * Display a listing of the resource.
@@ -35,22 +42,9 @@ class ProductImageGalleryController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreProductImageGalleryRequest $request)
     {
-        $request->validate([
-            'images.*' => ['required', 'image', 'max:2048'],
-
-        ]);
-
-        $imagesPaths = $this->uploadMultipleImages($request, 'images', 'uploads');
-
-        foreach ($imagesPaths as $imagePath) {
-            $productImageGallery = new ProductImageGallery();
-            $productImageGallery->image = $imagePath;
-            $productImageGallery->product_id = $request->product;
-
-            $productImageGallery->save();
-        }
+        $this->productImageGalleryService->saveProductImageGallery($request->validated());
 
         toastr('Uploaded Successfully!');
 
@@ -86,10 +80,7 @@ class ProductImageGalleryController extends Controller
      */
     public function destroy(string $id)
     {
-        $productImageGallery = ProductImageGallery::findOrFail($id);
-
-        $this->deleteImage($productImageGallery->image);
-        $productImageGallery->delete();
+        $this->productImageGalleryService->deleteProductImageGallery($id);
 
         return response([
             'status' => 'success',

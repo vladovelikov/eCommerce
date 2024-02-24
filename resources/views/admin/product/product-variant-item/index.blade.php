@@ -50,6 +50,9 @@
                         id: id,
                         status: isChecked
                     },
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
                     success: function(data) {
                         toastr.success(data.message);
                     },
