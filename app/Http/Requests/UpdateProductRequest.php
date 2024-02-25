@@ -27,7 +27,7 @@ class UpdateProductRequest extends FormRequest
             'category' => ['required'],
             'subcategory' => ['nullable'],
             'child_category' => ['nullable'],
-            'brand' => ['required'],
+            'brand_id' => ['required'],
             'price' => ['required'],
             'qty' => ['required'],
             'short_description' => ['required', 'max:600'],
