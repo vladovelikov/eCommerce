@@ -52,7 +52,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label>Background Image</label>
-                                    <input type="file" name="background_image" class="form-control">
+                                    <input type="file" name="image" class="form-control">
                                 </div>
                                 <button type="submit" class="btn btn-primary">Create</button>
                             </form>

@@ -36,7 +36,7 @@
                                     <div class="col-md-4">
                                         <div class="form-group">
                                             <label>Category</label>
-                                            <select id="status" class="form-control main-category" name="category">
+                                            <select id="status" class="form-control main-category" name="category_id">
                                                 <option value="">Select</option>
                                                 @foreach($categories as $category)
                                                     <option value={{$category->id}}>{{$category->name}}</option>
@@ -47,7 +47,7 @@
                                     <div class="col-md-4">
                                         <div class="form-group">
                                             <label>Subcategory</label>
-                                            <select id="status" class="form-control sub-category" name="subcategory">
+                                            <select id="status" class="form-control sub-category" name="subcategory_id">
                                                 <option value="">Select</option>
                                             </select>
                                         </div>
@@ -56,7 +56,7 @@
                                         <div class="form-group">
                                             <label>Child Category</label>
                                             <select id="status" class="form-control child-category"
-                                                    name="child_category">
+                                                    name="child_category_id">
                                                 <option value="">Select</option>
                                             </select>
                                         </div>
@@ -64,7 +64,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label>Brand</label>
-                                    <select id="status" class="form-control" name="brand">
+                                    <select id="status" class="form-control" name="brand_id">
                                         <option value="">Select</option>
                                         @foreach($brands as $brand)
                                             <option value={{$brand->id}}>{{$brand->name}}</option>
@@ -102,7 +102,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label>Stock Quantity</label>
-                                    <input type="number" min="0" name="qty" class="form-control" value="{{old('qty')}}">
+                                    <input type="number" min="0" name="quantity" class="form-control" value="{{old('qty')}}">
                                 </div>
                                 <div class="form-group">
                                     <label>Video URL</label>

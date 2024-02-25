@@ -76,7 +76,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label>Brand</label>
-                                    <select id="status" class="form-control" name="brand">
+                                    <select id="status" class="form-control" name="brand_id">
                                         <option value="">Select</option>
                                         @foreach($brands as $brand)
                                             <option {{$product->brand_id == $brand->id ? 'selected' : ''}} value={{$brand->id}}>{{$brand->name}}</option>
