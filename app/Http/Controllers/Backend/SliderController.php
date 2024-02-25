@@ -4,13 +4,17 @@ namespace App\Http\Controllers\Backend;
 
 use App\DataTables\SliderDataTable;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreSliderRequest;
+use App\Http\Requests\UpdateSliderRequest;
 use App\Models\Slider;
-use App\Traits\ImageUploadTrait;
-use Illuminate\Http\Request;
+use App\Services\SliderService;
 
 class SliderController extends Controller
 {
-    use ImageUploadTrait;
+
+    public function __construct(private SliderService $sliderService)
+    {
+    }
 
     /**
      * Display a listing of the resource.
@@ -31,32 +35,9 @@ class SliderController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreSliderRequest $request)
     {
-        $request->validate([
-            'title' => ['required', 'string', 'max:200'],
-            'type' => ['string', 'max:200'],
-            'starting_price' => ['max:200'],
-            'button_url' => ['url'],
-            'order' => ['required', 'integer'],
-            'status' => ['required'],
-            'background_image' => ['nullable', 'image', 'max:2000']
-        ]);
-
-        $slider = new Slider();
-
-        /* Handle image upload */
-        $imagePath = $this->uploadImage($request, 'background_image', 'uploads');
-
-        $slider->type = $request->type;
-        $slider->title = $request->title;
-        $slider->starting_price = $request->starting_price;
-        $slider->button_url = $request->button_url;
-        $slider->order = $request->order;
-        $slider->status = $request->status;
-        $slider->image = $imagePath;
-
-        $slider->save();
+        $this->sliderService->saveSlider($request->validated());
 
         toastr()->success('Slider created successfully.');
 
@@ -84,38 +65,13 @@ class SliderController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UpdateSliderRequest $request, string $id)
     {
-        $request->validate([
-            'title' => ['required', 'string', 'max:200'],
-            'type' => ['string', 'max:200'],
-            'starting_price' => ['max:200'],
-            'button_url' => ['url'],
-            'order' => ['required', 'integer'],
-            'status' => ['required'],
-            'background_image' => ['nullable', 'image', 'max:2000']
-        ]);
-
-        $slider = Slider::findOrFail($id);
-        $imageOldPath = $slider->image;
-
-        $imagePath = $this->uploadImage($request, 'background_image', 'uploads', $imageOldPath);
-
-        $slider->type = $request->type;
-        $slider->title = $request->title;
-        $slider->starting_price = $request->starting_price;
-        $slider->button_url = $request->button_url;
-        $slider->order = $request->order;
-        $slider->status = $request->status;
-        $slider->image = $imagePath ?: $imageOldPath;
-
-        $slider->save();
+        $this->sliderService->updateSlider($request->validated(), $id);
 
         toastr()->success('Slider updated successfully.');
 
         return redirect()->route('admin.slider.index');
-
-
     }
 
     /**
@@ -123,9 +79,7 @@ class SliderController extends Controller
      */
     public function destroy(string $id)
     {
-        $slider = Slider::findOrFail($id);
-        $this->deleteImage($slider->image);
-        $slider->delete();
+        $this->sliderService->deleteSlider($id);
 
         return response([
             'status' => 'success',

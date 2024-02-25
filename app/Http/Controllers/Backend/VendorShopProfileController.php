@@ -39,7 +39,7 @@ class VendorShopProfileController extends Controller
      */
     public function store(StoreVendorRequest $request)
     {
-        $this->vendorProfileService->saveProfile($request);
+        $this->vendorProfileService->saveProfile($request->validated(), Auth::user()->id);
 
         toastr('Updated successfully!', 'success');
 

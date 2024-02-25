@@ -11,22 +11,17 @@ class VendorProfileService
 
     use ImageUploadTrait;
 
-    public function saveProfile($request)
+    public function saveProfile(array $vendorData, string $vendorId)
     {
-        $vendor = Vendor::where('user_id', Auth::user()->id)->first();
+        $vendor = Vendor::where('user_id', $vendorId)->first();
 
-        $bannerPath = $this->updateImage($request, 'banner', 'uploads', $vendor->banner);
+        if (isset($vendorData['banner']) && $vendorData['banner']) {
+            $vendorData['banner'] = $this->uploadImage($vendorData['banner'], 'uploads');
+        } else {
+            unset($vendorData['banner']);
+        }
 
-        $vendor->banner = !empty($bannerPath) ? $bannerPath : $vendor->banner;
-        $vendor->shop_name = $request->shop_name;
-        $vendor->phone = $request->phone;
-        $vendor->email = $request->email;
-        $vendor->address = $request->address;
-        $vendor->description = $request->description;
-        $vendor->fb_link = $request->fb_link;
-        $vendor->tw_link = $request->tw_link;
-        $vendor->insta_link = $request->insta_link;
-
+        $vendor->fill($vendorData);
         $vendor->save();
     }
 }

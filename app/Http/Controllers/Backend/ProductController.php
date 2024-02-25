@@ -16,6 +16,7 @@ use App\Services\ProductService;
 
 class ProductController extends Controller
 {
+
     public function __construct(private ProductService $productService)
     {
     }
@@ -110,7 +111,7 @@ class ProductController extends Controller
      */
     public function updateStatus(Request $request)
     {
-        $this->productService->updateStatus($request);
+        $this->productService->updateStatus($request->id, $request->status);
 
         return response([
             'message' => 'Status updated successfully!'
