@@ -4,12 +4,20 @@ namespace App\Http\Controllers\Backend;
 
 use App\DataTables\CategoryDataTable;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreCategoryRequest;
+use App\Http\Requests\UpdateCategoryRequest;
+use App\Http\Requests\UpdateCategoryStatusRequest;
 use App\Models\Category;
 use App\Models\Subcategory;
-use Illuminate\Http\Request;
+use App\Services\CategoryService;
 
 class CategoryController extends Controller
 {
+    public function __construct(private CategoryService $categoryService)
+    {
+    }
+
+
     /**
      * Display a listing of the resource.
      */
@@ -29,20 +37,9 @@ class CategoryController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreCategoryRequest $request)
     {
-        $request->validate([
-            "icon" => ["required", "not_in:empty"],
-            "name" => ["required", "max: 200", "unique:categories,name"],
-            "status" => ["required"]
-        ]);
-
-        $category = new Category();
-        $category->icon = $request->icon;
-        $category->name = $request->name;
-        $category->status = $request->status;
-
-        $category->save();
+        Category::create($request->validated());
 
         toastr('Created successfully!', 'success');
 
@@ -70,20 +67,13 @@ class CategoryController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UpdateCategoryRequest $request, string $id)
     {
-        $request->validate([
-            "icon" => ["required", "not_in:empty"],
-            "name" => ["required", "max: 200", "unique:categories,name," . $id],
-            "status" => ["required"]
-        ]);
+        $category = Category::find($id);
 
-        $category = Category::findOrFail($id);
-        $category->icon = $request->icon;
-        $category->name = $request->name;
-        $category->status = $request->status;
-
-        $category->save();
+        if ($category) {
+            $category->update($request->validated());
+        }
 
         toastr('Updated successfully!', 'success');
 
@@ -93,7 +83,7 @@ class CategoryController extends Controller
     /**
      * Update the category status.
      */
-    public function updateStatus(Request $request)
+    public function updateStatus(UpdateCategoryStatusRequest $request)
     {
         $category = Category::findOrFail($request->id);
         $category->status = $request->status == 'true' ? 1 : 0;

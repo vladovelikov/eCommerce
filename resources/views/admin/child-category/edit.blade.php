@@ -26,7 +26,7 @@
                                 @method('PUT')
                                 <div class="form-group">
                                     <label>Category</label>
-                                    <select id="status" name="category" class="form-control main-category">
+                                    <select id="status" name="category_id" class="form-control main-category">
                                         <option value="">Select</option>
                                         @foreach($categories as $category)
                                             <option {{$category->id == $childCategory->category_id ? 'selected' : ''}} value="{{$category->id}}">{{$category->name}}</option>
@@ -35,7 +35,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label>Subcategory</label>
-                                    <select id="status" name="subcategory" class="form-control sub-category">
+                                    <select id="status" name="subcategory_id" class="form-control sub-category">
                                         <option value="">Select</option>
                                         @foreach($subcategories as $subcategory)
                                             <option {{$subcategory->id == $childCategory->subcategory_id ? 'selected' : ''}} value="{{$subcategory->id}}">{{$subcategory->name}}</option>

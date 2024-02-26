@@ -25,7 +25,7 @@
                                 @csrf
                                 <div class="form-group">
                                     <label>Category</label>
-                                    <select id="status" name="category" class="form-control">
+                                    <select id="status" name="category_id" class="form-control">
                                         @foreach($categories as $category)
                                             <option value="{{$category->id}}">{{$category->name}}</option>
                                         @endforeach

@@ -4,13 +4,16 @@ namespace App\Http\Controllers\Backend;
 
 use App\DataTables\SubcategoryDataTable;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreSubcategoryRequest;
+use App\Http\Requests\UpdateSubcategoryRequest;
+use App\Http\Requests\UpdateSubcategoryStatusRequest;
 use App\Models\Category;
 use App\Models\ChildCategory;
 use App\Models\Subcategory;
-use Illuminate\Http\Request;
 
 class SubcategoryController extends Controller
 {
+
     /**
      * Display a listing of the resource.
      */
@@ -32,20 +35,9 @@ class SubcategoryController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreSubcategoryRequest $request)
     {
-        $request->validate([
-            'category' => ['required'],
-            'name' => ['required', 'unique:subcategories,name', 'max:200'],
-            'status' => ['required']
-        ]);
-
-        $subcategory = new Subcategory();
-        $subcategory->category_id = $request->category;
-        $subcategory->name = $request->name;
-        $subcategory->status = $request->status;
-
-        $subcategory->save();
+        Subcategory::create($request->validated());
 
         toastr('Created successfully!', 'success');
 
@@ -75,19 +67,10 @@ class SubcategoryController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UpdateSubcategoryRequest $request, string $id)
     {
-        $request->validate([
-            'category' => ['required'],
-            'name' => ['required', 'unique:subcategories,name,' . $id, 'max:200'],
-            'status' => ['required']
-        ]);
-
         $subcategory = Subcategory::findOrFail($id);
-        $subcategory->category_id = $request->category;
-        $subcategory->name = $request->name;
-        $subcategory->status = $request->status;
-
+        Subcategory::fill($request->validated());
         $subcategory->save();
 
         toastr('Subcategory updated successfully!', 'success');
@@ -98,7 +81,7 @@ class SubcategoryController extends Controller
     /**
      * Update subcategory status.
      */
-    public function updateStatus(Request $request)
+    public function updateStatus(UpdateSubcategoryStatusRequest $request)
     {
         $subcategory = Subcategory::findOrFail($request->id);
         $subcategory->status = $request->status == 'true' ? 1 : 0;

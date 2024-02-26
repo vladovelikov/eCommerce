@@ -4,6 +4,9 @@ namespace App\Http\Controllers\Backend;
 
 use App\DataTables\ChildCategoryDataTable;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreChildCategoryRequest;
+use App\Http\Requests\UpdateChildCategoryRequest;
+use App\Http\Requests\UpdateChildCategoryStatusRequest;
 use App\Models\Category;
 use App\Models\ChildCategory;
 use App\Models\Subcategory;
@@ -32,21 +35,9 @@ class ChildCategoryController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreChildCategoryRequest $request)
     {
-        $request->validate([
-            'category' => ['required'],
-            'subcategory' => ['required'],
-            'name' => ['required', 'max:200', 'unique:child_categories,name'],
-            'status' => ['required']
-        ]);
-
-        $childCategory = new ChildCategory();
-        $childCategory->category_id = $request->category;
-        $childCategory->subcategory_id = $request->subcategory;
-        $childCategory->name = $request->name;
-        $childCategory->status = $request->status;
-        $childCategory->save();
+        ChildCategory::create($request->validated());
 
         toastr('Created successfully!', 'success');
 
@@ -76,21 +67,10 @@ class ChildCategoryController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UpdateChildCategoryRequest $request, string $id)
     {
-        $request->validate([
-            'category' => ['required'],
-            'subcategory' => ['required'],
-            'name' => ['required', 'max:200'],
-            'status' => ['required']
-        ]);
-
         $childCategory = ChildCategory::findOrFail($id);
-
-        $childCategory->category_id = $request->category;
-        $childCategory->subcategory_id = $request->subcategory;
-        $childCategory->name = $request->name;
-        $childCategory->status = $request->status;
+        $childCategory->fill($request->validated());
         $childCategory->save();
 
         toastr('Updated successfully!', 'success');
@@ -125,7 +105,7 @@ class ChildCategoryController extends Controller
         return $subcategories;
     }
 
-    public function updateStatus(Request $request)
+    public function updateStatus(UpdateChildCategoryStatusRequest $request)
     {
         $childCategory = ChildCategory::findOrFail($request->id);
         $childCategory->status = $request->status == 'true' ? 1 : 0;

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\UpdateUserPasswordRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Services\UserService;
+use Illuminate\Support\Facades\Auth;
 
 class VendorProfileController extends Controller
 {
@@ -37,7 +38,7 @@ class VendorProfileController extends Controller
      */
     public function updatePassword(UpdateUserPasswordRequest $request)
     {
-        $this->userService->updatePassword($request);
+        $this->userService->updatePassword($request->validated(), Auth::user()->id);
 
         toastr()->success('Password changed successfully.');
 
