@@ -106,7 +106,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label>Video URL</label>
-                                    <input type="number" min="0" name="video_url" class="form-control"
+                                    <input type="text" name="video_url" class="form-control"
                                            value="{{old('video_url')}}">
                                 </div>
                                 <div class="form-group">
@@ -143,6 +143,9 @@
                                         <option value="1">Active</option>
                                         <option value="0">Inactive</option>
                                     </select>
+                                </div>
+                                <div class="form-group">
+                                    <input type="hidden" name="is_approved" class="form-control" value="1">
                                 </div>
                                 <button type="submit" class="btn btn-primary">Create</button>
                             </form>

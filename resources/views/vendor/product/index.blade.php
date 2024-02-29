@@ -35,11 +35,14 @@
                 let id = $(this).data('id');
 
                 $.ajax({
-                    url: "{{route('admin.product.update-status')}}",
+                    url: "{{route('vendor.product.update-status')}}",
                     method: 'PUT',
                     data: {
                         id: id,
                         status: isChecked
+                    },
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     },
                     success: function(data) {
                         toastr.success(data.message);
