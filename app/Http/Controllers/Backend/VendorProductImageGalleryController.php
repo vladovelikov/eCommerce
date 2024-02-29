@@ -7,20 +7,15 @@ use App\DataTables\VendorProductImageGalleryDataTable;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreProductImageGalleryRequest;
 use App\Models\Product;
-use App\Models\ProductImageGallery;
 use App\Services\ProductImageGalleryService;
-use App\Traits\ImageUploadTrait;
 use Illuminate\Http\Request;
 
-class ProductImageGalleryController extends Controller
+class VendorProductImageGalleryController extends Controller
 {
-
-    use ImageUploadTrait;
 
     public function __construct(private ProductImageGalleryService $productImageGalleryService)
     {
     }
-
 
     /**
      * Display a listing of the resource.
@@ -29,7 +24,7 @@ class ProductImageGalleryController extends Controller
     {
         $product = Product::findOrFail($request->product);
 
-        return $dataTable->render('admin.product.image-gallery.index', compact('product'));
+        return $dataTable->render('vendor.product.image-gallery.index', compact('product'));
     }
 
     /**

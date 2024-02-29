@@ -9491,3 +9491,13 @@ a:not([href]):not([class]):hover {
     margin-bottom: 15px;
     text-align: right;
 }
+
+.delete-item {
+    margin-left: 4px;
+}
+
+.more-item {
+    margin-left: 4px;
+}
+
+
