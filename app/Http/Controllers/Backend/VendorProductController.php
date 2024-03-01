@@ -91,7 +91,12 @@ class VendorProductController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $this->productService->deleteProduct($id);
+
+        return response([
+            'status' => 'success',
+            'message' => 'Product deleted successfully!'
+        ]);
     }
 
     /**

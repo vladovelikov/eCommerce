@@ -9,13 +9,9 @@ use App\Http\Requests\UpdateCategoryRequest;
 use App\Http\Requests\UpdateCategoryStatusRequest;
 use App\Models\Category;
 use App\Models\Subcategory;
-use App\Services\CategoryService;
 
 class CategoryController extends Controller
 {
-    public function __construct(private CategoryService $categoryService)
-    {
-    }
 
 
     /**

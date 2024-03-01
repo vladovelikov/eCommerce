@@ -19,9 +19,9 @@ class ProductVariantItemService
         $productVariantItem->save();
     }
 
-    public function updateVariantItem(array $variantItemData)
+    public function updateVariantItem(array $variantItemData, $id)
     {
-        $productVariantItem = ProductVariantItem::findOrFail();
+        $productVariantItem = ProductVariantItem::findOrFail($id);
         $productVariantItem->name = $variantItemData['item_name'];
         $productVariantItem->price = $variantItemData['price'];
         $productVariantItem->is_default = $variantItemData['is_default'];

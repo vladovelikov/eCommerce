@@ -7,9 +7,9 @@
             <div class="row">
                 <div class="col-xl-9 col-xxl-10 col-lg-9 ms-auto">
                     <div class="dashboard_content mt-2 mt-md-0">
-                        <h3><i class="far fa-user"></i> Product Variants for {{$product->name}}</h3>
+                        <h3><i class="far fa-user"></i> Variant items for {{$product->name}}</h3>
                         <div class="create_button">
-                            <a href="{{route('vendor.products-variants.create', ['product' => $product->id])}}" class="btn btn-primary"><i class="fas fa-plus"></i> Create New</a>
+                            <a href="{{route('vendor.product-variant-items.create', ['productId' => $product->id, 'variantId' => $productVariant->id])}}" class="btn btn-primary"><i class="fas fa-plus"></i> Create New</a>
                         </div>
                         <div class="wsus__dashboard_profile">
                             <div class="wsus__dash_pro_area">
@@ -35,7 +35,7 @@
                 let id = $(this).data('id');
 
                 $.ajax({
-                    url: "{{route('vendor.products-variants.update-status')}}",
+                    url: "{{route('vendor.product-variant-items.update-status')}}",
                     method: 'PUT',
                     data: {
                         id: id,
@@ -56,4 +56,3 @@
         });
     </script>
 @endpush
-

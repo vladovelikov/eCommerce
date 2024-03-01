@@ -56,6 +56,18 @@ class VendorProductDataTable extends DataTable
                         return "<i class='badge badge-danger'>None</i>";
                 }
             })
+            ->addColumn('is_approved', function ($query) {
+                switch ($query->is_approved) {
+                    case 1:
+                        return "<i class='badge bg-success'>Approved</i>";
+                        break;
+                    case 0:
+                        return "<i class='badge bg-info'>Pending</i>";
+                        break;
+                    default:
+                        return "<i class='badge bg-info'>Pending</i>";
+                }
+            })
             ->addColumn('status', function ($query) {
                 if ($query->status == 1) {
                     $button = '<div class="form-check form-switch">
@@ -63,13 +75,13 @@ class VendorProductDataTable extends DataTable
                         </div>';
                 } else {
                     $button = '<div class="form-check form-switch">
-                        <input class="form-check-input change-status" type="checkbox" style="border-radius: 40% !important;" data-id="' . $query->id . '" id="flexSwitchCheckChecked" checked>
+                        <input class="form-check-input change-status" type="checkbox" style="border-radius: 40% !important;" data-id="' . $query->id . '" id="flexSwitchCheckChecked">
                         </div>';
                 }
 
                 return $button;
             })
-            ->rawColumns(['image', 'action', 'product_type', 'status'])
+            ->rawColumns(['image', 'is_approved', 'action', 'product_type', 'status'])
             ->setRowId('id');
     }
 
@@ -114,6 +126,7 @@ class VendorProductDataTable extends DataTable
             Column::make('price')->width('100'),
             Column::make('image')->width('150'),
             Column::make('product_type')->width('100'),
+            Column::make('is_approved'),
             Column::make('status')->width('80'),
             Column::computed('action')
                 ->exportable(false)

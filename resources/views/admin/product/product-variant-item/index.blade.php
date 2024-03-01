@@ -44,7 +44,7 @@
                 let id = $(this).data('id');
 
                 $.ajax({
-                    url: "{{route('admin.product-variant-items.update-status')}}",
+                    url: "{{route('vendor.product-variant-items.update-status')}}",
                     method: 'PUT',
                     data: {
                         id: id,
@@ -57,7 +57,7 @@
                         toastr.success(data.message);
                     },
                     error: function () {
-                        toastr.error('Error while updating product variant status!');
+                        toastr.error('Error while updating product variant item status!');
                     }
                 });
 

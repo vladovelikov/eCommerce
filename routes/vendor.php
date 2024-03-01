@@ -4,6 +4,7 @@ use App\Http\Controllers\Backend\VendorController;
 use App\Http\Controllers\Backend\VendorProductController;
 use App\Http\Controllers\Backend\VendorProductImageGalleryController;
 use App\Http\Controllers\Backend\VendorProductVariantController;
+use App\Http\Controllers\Backend\VendorProductVariantItemController;
 use App\Http\Controllers\Backend\VendorProfileController;
 use App\Http\Controllers\Backend\VendorShopProfileController;
 use Illuminate\Support\Facades\Route;
@@ -41,14 +42,14 @@ Route::get('products/{id}/edit', [VendorProductController::class, 'edit'])->name
 Route::resource('products-image-gallery', VendorProductImageGalleryController::class);
 
 /** Vendor Products Variants Routes */
-//Route::put('products-variants/update-status', [VendorProductVariantController::class, 'updateStatus'])->name('products-variants.update-status');
+Route::put('products-variants/update-status', [VendorProductVariantController::class, 'updateStatus'])->name('products-variants.update-status');
 Route::resource('products-variants', VendorProductVariantController::class);
 
-///** Vendor Product Variant Items Routes */
-//Route::get('product-variant-items/{productId}/{variantId}', [VendorProductVariantItemController::class, 'index'])->name('product-variant-items.index');
-//Route::get('product-variant-items/create/{productId}/{variantId}', [VendorProductVariantItemController::class, 'create'])->name('product-variant-items.create');
-//Route::get('product-variant-items/{variantItemId}', [VendorProductVariantItemController::class, 'edit'])->name('product-variant-items.edit');
-//Route::post('product-variant-items', [VendorProductVariantItemController::class, 'store'])->name('product-variant-items.store');
-//Route::put('product-variant-items/updateStatus', [VendorProductVariantItemController::class, 'updateStatus'])->name('product-variant-items.update-status');
-//Route::put('product-variant-items/update/{variantItemId}', [VendorProductVariantItemController::class, 'update'])->name('product-variant-items.update');
-//Route::delete('product-variant-items/destroy/{variantItemId}', [VendorProductVariantItemController::class, 'destroy'])->name('product-variant-items.destroy');
+/** Vendor Product Variant Items Routes */
+Route::get('product-variant-items/{productId}/{variantId}', [VendorProductVariantItemController::class, 'index'])->name('product-variant-items.index');
+Route::get('product-variant-items/create/{productId}/{variantId}', [VendorProductVariantItemController::class, 'create'])->name('product-variant-items.create');
+Route::get('product-variant-items/{variantItemId}', [VendorProductVariantItemController::class, 'edit'])->name('product-variant-items.edit');
+Route::post('product-variant-items', [VendorProductVariantItemController::class, 'store'])->name('product-variant-items.store');
+Route::put('product-variant-items/updateStatus', [VendorProductVariantItemController::class, 'updateStatus'])->name('product-variant-items.update-status');
+Route::put('product-variant-items/update/{variantItemId}', [VendorProductVariantItemController::class, 'update'])->name('product-variant-items.update');
+Route::delete('product-variant-items/destroy/{variantItemId}', [VendorProductVariantItemController::class, 'destroy'])->name('product-variant-items.destroy');

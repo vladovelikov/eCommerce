@@ -23,7 +23,6 @@ class ProductService
 
         $product = new Product();
 
-        //TODO: set the vendor_id for the product
         $productData['vendor_id'] = Auth::user()->vendor->id;
         $product->fill($productData);
 
@@ -48,9 +47,16 @@ class ProductService
         $product->save();
     }
 
-    public function deleteProduct(string $id)
+    public function deleteProduct(string $id, string $vendorId = null)
     {
-        $product = Product::findOrFail($id);
+        $query = Product::where('id', $id);
+
+        if ($vendorId) {
+            $query->where('vendor_id', $vendorId);
+        }
+
+        $product = $query->firstOrFail();
+
         $productImages = ProductImageGallery::where('product_id', $product->id)->get();
 
         //Delete the main product image
