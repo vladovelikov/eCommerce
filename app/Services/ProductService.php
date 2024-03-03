@@ -23,6 +23,7 @@ class ProductService
 
         $product = new Product();
 
+        //TODO: set the vendor_id for the product
         $productData['vendor_id'] = Auth::user()->vendor->id;
         $product->fill($productData);
 
@@ -39,10 +40,7 @@ class ProductService
             unset($productData['image']);
         }
 
-        //TODO: set the vendor_id for the product
-        $productData['vendor_id'] = Auth::user()->id;
         $product->fill($productData);
-        $product->is_approved = 1;
 
         $product->save();
     }

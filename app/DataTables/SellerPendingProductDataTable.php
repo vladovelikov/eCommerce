@@ -4,14 +4,13 @@ namespace App\DataTables;
 
 use App\Models\Product;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
-use Illuminate\Support\Facades\Auth;
 use Yajra\DataTables\EloquentDataTable;
 use Yajra\DataTables\Html\Builder as HtmlBuilder;
 use Yajra\DataTables\Html\Button;
 use Yajra\DataTables\Html\Column;
 use Yajra\DataTables\Services\DataTable;
 
-class SellerProductDataTable extends DataTable
+class SellerPendingProductDataTable extends DataTable
 {
     /**
      * Build the DataTable class.
@@ -61,10 +60,10 @@ class SellerProductDataTable extends DataTable
                 return $query->vendor->shop_name;
             })
             ->addColumn('approve', function ($query) {
-                return "<select class='form-control is_approved' data-id='$query->id'>
-                            <option value='0'>Pending</option>
-                            <option selected value='1'>Approved</option>
-                        </select>";
+                return '<select class="form-control is_approved" data-id='. $query->id .'>
+                            <option value="0">Pending</option>
+                            <option value="1">Approved</option>
+                        </select>';
             })
             ->addColumn('status', function ($query) {
                 if ($query->status == 1) {
@@ -88,9 +87,7 @@ class SellerProductDataTable extends DataTable
      */
     public function query(Product $model): QueryBuilder
     {
-        return $model->where('vendor_id', '!=', Auth::user()->vendor->id)
-            ->where('is_approved', 1)
-            ->newQuery();
+        return $model->where('is_approved', 0)->newQuery();
     }
 
     /**
@@ -99,11 +96,11 @@ class SellerProductDataTable extends DataTable
     public function html(): HtmlBuilder
     {
         return $this->builder()
-                    ->setTableId('sellerproduct-table')
+                    ->setTableId('sellerpendingproduct-table')
                     ->columns($this->getColumns())
                     ->minifiedAjax()
                     //->dom('Bfrtip')
-                    ->orderBy(0)
+                    ->orderBy(1)
                     ->selectStyleSingle()
                     ->buttons([
                         Button::make('excel'),
@@ -142,6 +139,6 @@ class SellerProductDataTable extends DataTable
      */
     protected function filename(): string
     {
-        return 'SellerProduct_' . date('YmdHis');
+        return 'SellerPendingProduct_' . date('YmdHis');
     }
 }

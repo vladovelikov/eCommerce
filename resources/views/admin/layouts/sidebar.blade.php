@@ -19,7 +19,12 @@
                 'admin.child-category.*',
                 'admin.brand.*',
                 'admin.vendor-profile.*',
-                'admin.products.*'
+                'admin.products.*',
+                'admin.seller-products.*',
+                'admin.seller-pending-products.*',
+                'admin.product-variant-items.*',
+                'admin.products-image-gallery.*',
+                'admin.products-variants.*'
             ]) }}">
                 <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i class="fas fa-columns"></i> <span>Manage Website</span></a>
                 <ul class="dropdown-menu">
@@ -30,10 +35,14 @@
 {{--                    <li class="{{ setActive(['admin.product.*']) }}"><a class="nav-link" href="{{route('admin.product.index')}}">Products</a></li>--}}
                     <li class="{{ setActive(['admin.brand.*']) }}"><a class="nav-link" href="{{route('admin.brand.index')}}">Brands</a></li>
                     <li class="{{ setActive(['admin.vendor-profile.*']) }}"><a class="nav-link" href="{{route('admin.vendor-profile.index')}}">Vendor Profile</a></li>
-                    <li class="{{ setActive(['admin.products.*']) }}"><a class="nav-link" href="{{route('admin.products.index')}}">Products</a></li>
-                    <li class="{{ setActive(['admin.products.*']) }}"><a class="nav-link" href="{{route('admin.products.index')}}">Seller Products</a></li>
+                    <li class="{{ setActive(['admin.products.*', 'admin.product-variant-items.*', 'admin.products-image-gallery.*', 'admin.products-variants.*']) }}"><a class="nav-link" href="{{route('admin.products.index')}}">Products</a></li>
+                    <li class="{{ setActive(['admin.seller-products.*']) }}"><a class="nav-link" href="{{route('admin.seller-products.index')}}">Seller Products</a></li>
+                    <li class="{{ setActive(['admin.seller-pending-products.*']) }}"><a class="nav-link" href="{{route('admin.seller-pending-products.index')}}">Seller Pending Products</a></li>
+
                 </ul>
             </li>
+
+
 
 {{--            <li class="dropdown">--}}
 {{--                <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i class="fas fa-columns"></i> <span>Layout</span></a>--}}
