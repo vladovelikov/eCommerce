@@ -1,3 +1,4 @@
+
 * {
   margin: 0;
   padding: 0;
@@ -9502,6 +9503,10 @@ a:not([href]):not([class]):hover {
 
 .btn-space-right {
     margin-right: 5px;
+}
+
+.products-selection {
+    display: flex !important;
 }
 
 

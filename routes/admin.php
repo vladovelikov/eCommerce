@@ -91,5 +91,5 @@ Route::get('seller-pending-products', [SellerProductController::class, 'pendingP
 Route::put('update-approval-status', [SellerProductController::class, 'updateApprovalStatus'])->name('update-approval-status');
 
 /** Flash Sale Products */
-Route::get('flash-sale', [FlashSaleController::class, 'index'])->name('flash-sale.index');
+Route::resource('flash-sale', FlashSaleController::class);
 
