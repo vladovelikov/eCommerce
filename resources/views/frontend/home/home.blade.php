@@ -153,7 +153,7 @@
 <!--============================
     FLASH SELL START
 ==============================-->
-@include('frontend.home.sections.flash-sell')
+@include('frontend.home.sections.flash-sale')
 <!--============================
     FLASH SELL END
 ==============================-->
