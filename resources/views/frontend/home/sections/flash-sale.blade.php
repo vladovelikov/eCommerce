@@ -6,7 +6,7 @@
                     <div class="wsus__flash_coundown">
                         <span class=" end_text">flash sale</span>
                         <div class="simply-countdown simply-countdown-one"></div>
-                        <a class="common_btn" href="#">see more <i class="fas fa-caret-right"></i></a>
+                        <a class="common_btn" href="{{route('flash-sale')}}">see more <i class="fas fa-caret-right"></i></a>
                     </div>
                 </div>
             </div>
@@ -21,7 +21,13 @@
                         @endif
                         <a class="wsus__pro_link" href="product_details.html">
                             <img src="{{asset($product->image)}}" alt="product" class="img-fluid w-100 img_1"/>
-                            <img src="{{asset($product->image)}}" alt="product" class="img-fluid w-100 img_2"/>
+                            <img src="
+                                @if(isset($product->productImageGallery[0]->image))
+                                    {{asset($product->productImageGallery[1]->image)}}
+                                @else
+                                    {{asset($product->image)}}
+                                @endif
+                            " alt="product" class="img-fluid w-100 img_2"/>
                         </a>
                         <ul class="wsus__single_pro_icon">
                             <li><a href="#" data-bs-toggle="modal" data-bs-target="#exampleModal"><i
