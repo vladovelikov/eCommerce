@@ -6,10 +6,10 @@
             <div class="container">
                 <div class="row">
                     <div class="col-12">
-                        <h4>flash sale</h4>
+                        <h4>Flash Sale</h4>
                         <ul>
-                            <li><a href="#">daily deals</a></li>
-                            <li><a href="#">offer details</a></li>
+                            <li><a href="{{url('/')}}">Home</a></li>
+                            <li><a href="javascript:;">Flash Sale</a></li>
                         </ul>
                     </div>
                 </div>
@@ -22,7 +22,7 @@
                 <div class="row">
                     <div class="col-xl-6 col-md-6">
                         <div class="wsus__offer_details_banner">
-                            <img src="images/offer_banner_2.png" alt="offrt img" class="img-fluid w-100">
+                            <img src="{{asset('frontend/assets/images/offer_banner_2.png')}}" alt="offrt img" class="img-fluid w-100">
                             <div class="wsus__offer_details_banner_text">
                                 <p>apple watch</p>
                                 <span>up 50% 0ff</span>
@@ -33,7 +33,7 @@
                     </div>
                     <div class="col-xl-6 col-md-6">
                         <div class="wsus__offer_details_banner">
-                            <img src="images/offer_banner_3.png" alt="offrt img" class="img-fluid w-100">
+                            <img src="{{asset('frontend/assets/images/offer_banner_3.png')}}" alt="offrt img" class="img-fluid w-100">
                             <div class="wsus__offer_details_banner_text">
                                 <p>xiaomi power bank</p>
                                 <span>up 37% 0ff</span>
@@ -57,132 +57,72 @@
                 </div>
 
                 <div class="row">
-                    <div class="col-xl-3">
-                        <div class="wsus__offer_det_single">
+                    @foreach($flashSaleProducts as $product)
+                        <div class="col-xl-3 col-sm-6 col-lg-4">
                             <div class="wsus__product_item">
+                                <span class="wsus__new">{{ productType($product->product_type) }}</span>
+                                @if(isDiscounted($product))
+                                    <span class="wsus__minus">-{{ $flashSale->discount_percentage }}%</span>
+                                @endif
                                 <a class="wsus__pro_link" href="product_details.html">
-                                    <img src="images/offer_3333.jpg" alt="product" class="img-fluid w-100 img_1" />
-                                    <img src="images/pro9_9.jpg" alt="product" class="img-fluid w-100 img_2" />
+                                    <img src="{{asset($product->image)}}" alt="product" class="img-fluid w-100 img_1"/>
+                                    <img src="
+                                @if(isset($product->productImageGallery[1]->image))
+                                    {{asset($product->productImageGallery[1]->image)}}
+                                @else
+                                    {{asset($product->image)}}
+                                @endif
+                            " alt="product" class="img-fluid w-100 img_2"/>
                                 </a>
+                                <ul class="wsus__single_pro_icon">
+                                    <li><a href="#" data-bs-toggle="modal" data-bs-target="#exampleModal"><i
+                                                class="far fa-eye"></i></a></li>
+                                    <li><a href="#"><i class="far fa-heart"></i></a></li>
+                                    <li><a href="#"><i class="far fa-random"></i></a>
+                                </ul>
                                 <div class="wsus__product_details">
-                                    <a class="wsus__category" href="#">fashion </a>
+                                    <a class="wsus__category" href="#">{{ $product->category->name }} </a>
                                     <p class="wsus__pro_rating">
                                         <i class="fas fa-star"></i>
                                         <i class="fas fa-star"></i>
                                         <i class="fas fa-star"></i>
                                         <i class="fas fa-star"></i>
                                         <i class="fas fa-star-half-alt"></i>
-                                        <span>(120 review)</span>
+                                        <span>(133 review)</span>
                                     </p>
-                                    <a class="wsus__pro_name" href="#">men's fashion sholder bag</a>
-                                    <p class="wsus__price">$159 <del>$200</del></p>
+                                    <a class="wsus__pro_name" href="#">${{ $product->name }}</a>
+                                    @if(isDiscounted($product))
+                                        <p class="wsus__price">${{ $product->offer_price }}
+                                            <del>${{ $product->price }}</del>
+                                        </p>
+                                    @else
+                                        <p class="wsus__price">${{ $product->price }}</p>
+                                    @endif
                                     <a class="add_cart" href="#">add to cart</a>
                                 </div>
                             </div>
-                            <div class="wsus__offer_progress">
-                                <p><span>Sold 91</span> <span>Total 120</span></p>
-                                <div class="progress">
-                                    <div class="progress-bar" role="progressbar" style="width: 65%;" aria-valuenow="65"
-                                         aria-valuemin="0" aria-valuemax="100">65%</div>
-                                </div>
-                            </div>
                         </div>
-                    </div>
-                    <div class="col-xl-3">
-                        <div class="wsus__offer_det_single">
-                            <div class="wsus__product_item">
-                                <a class="wsus__pro_link" href="product_details.html">
-                                    <img src="images/offer_1111.jpg" alt="product" class="img-fluid w-100 img_1" />
-                                    <img src="images/pro2_2.jpg" alt="product" class="img-fluid w-100 img_2" />
-                                </a>
-                                <div class="wsus__product_details">
-                                    <a class="wsus__category" href="#">fashion </a>
-                                    <p class="wsus__pro_rating">
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star-half-alt"></i>
-                                        <span>(72 review)</span>
-                                    </p>
-                                    <a class="wsus__pro_name" href="#">men's casual shoes</a>
-                                    <p class="wsus__price">$159 <del>$200</del></p>
-                                    <a class="add_cart" href="#">add to cart</a>
-                                </div>
-                            </div>
-                            <div class="wsus__offer_progress">
-                                <p><span>Sold 91</span> <span>Total 120</span></p>
-                                <div class="progress">
-                                    <div class="progress-bar" role="progressbar" style="width: 65%;" aria-valuenow="65"
-                                         aria-valuemin="0" aria-valuemax="100">65%</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xl-3">
-                        <div class="wsus__offer_det_single">
-                            <div class="wsus__product_item">
-                                <a class="wsus__pro_link" href="product_details.html">
-                                    <img src="images/offer_6.jpg" alt="product" class="img-fluid w-100 img_1" />
-                                    <img src="images/offer_8.jpg" alt="product" class="img-fluid w-100 img_2" />
-                                </a>
-                                <div class="wsus__product_details">
-                                    <a class="wsus__category" href="#">Electronics </a>
-                                    <p class="wsus__pro_rating">
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star-half-alt"></i>
-                                        <span>(120 review)</span>
-                                    </p>
-                                    <a class="wsus__pro_name" href="#">man casual fashion cap</a>
-                                    <p class="wsus__price">$115</p>
-                                    <a class="add_cart" href="#">add to cart</a>
-                                </div>
-                            </div>
-                            <div class="wsus__offer_progress">
-                                <p><span>Sold 91</span> <span>Total 120</span></p>
-                                <div class="progress">
-                                    <div class="progress-bar" role="progressbar" style="width: 65%;" aria-valuenow="65"
-                                         aria-valuemin="0" aria-valuemax="100">65%</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xl-3">
-                        <div class="wsus__offer_det_single">
-                            <div class="wsus__product_item">
-                                <a class="wsus__pro_link" href="product_details.html">
-                                    <img src="images/offer_3333.jpg" alt="product" class="img-fluid w-100 img_1" />
-                                    <img src="images/pro9_9.jpg" alt="product" class="img-fluid w-100 img_2" />
-                                </a>
-                                <div class="wsus__product_details">
-                                    <a class="wsus__category" href="#">fashion </a>
-                                    <p class="wsus__pro_rating">
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star-half-alt"></i>
-                                        <span>(120 review)</span>
-                                    </p>
-                                    <a class="wsus__pro_name" href="#">men's fashion sholder bag</a>
-                                    <p class="wsus__price">$159 <del>$200</del></p>
-                                    <a class="add_cart" href="#">add to cart</a>
-                                </div>
-                            </div>
-                            <div class="wsus__offer_progress">
-                                <p><span>Sold 91</span> <span>Total 120</span></p>
-                                <div class="progress">
-                                    <div class="progress-bar" role="progressbar" style="width: 65%;" aria-valuenow="65"
-                                         aria-valuemin="0" aria-valuemax="100">65%</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    @endforeach
+                </div>
+                <div class="mt-5">
+                    @if($flashSaleProducts->hasPages())
+                        {{$flashSaleProducts->links()}}
+                    @endif
                 </div>
             </div>
         </div>
     </section>
 @endsection
+
+@push('scripts')
+    <script>
+        $(document).ready(function () {
+            simplyCountdown('.simply-countdown-one', {
+                year: {{ date('Y', strtotime($flashSale->end_date)) }},
+                month: {{ date('m', strtotime($flashSale->end_date)) }},
+                day: {{ date('d', strtotime($flashSale->end_date)) }},
+                // enableUtc: true
+            })
+        });
+    </script>
+@endpush

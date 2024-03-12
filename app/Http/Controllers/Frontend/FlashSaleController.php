@@ -3,13 +3,22 @@
 namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use App\Models\FlashSale;
+use App\Models\Product;
 
 class FlashSaleController extends Controller
 {
 
     public function index()
     {
-        return view('frontend.pages.flash-sale');
+        $flashSale = FlashSale::first();
+
+        $flashSaleProducts = Product::where('offer_start_date', '<=', date('Y-m-d'))
+            ->where('offer_end_date', '>=', date('Y-m-d'))
+            ->where('status', 1)
+            ->orderBy('id', 'DESC')
+            ->paginate(1);
+
+        return view('frontend.pages.flash-sale', compact('flashSale', 'flashSaleProducts'));
     }
 }
