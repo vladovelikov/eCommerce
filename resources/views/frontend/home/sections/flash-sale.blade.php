@@ -19,7 +19,7 @@
                         @if(isDiscounted($product))
                             <span class="wsus__minus">-{{ $flashSale->discount_percentage }}%</span>
                         @endif
-                        <a class="wsus__pro_link" href="{{route('product-details', $product->name)}}">
+                        <a class="wsus__pro_link" href="{{route('product-details', $product->seo_url)}}">
                             <img src="{{asset($product->image)}}" alt="product" class="img-fluid w-100 img_1"/>
                             <img src="
                                 @if(isset($product->productImageGallery[1]->image))
@@ -45,7 +45,7 @@
                                 <i class="fas fa-star-half-alt"></i>
                                 <span>(133 review)</span>
                             </p>
-                            <a class="wsus__pro_name" href="{{route('product-details', $product->name)}}">{{ $product->name }}</a>
+                            <a class="wsus__pro_name" href="{{route('product-details', $product->seo_url)}}">{{ $product->name }}</a>
                             @if(isDiscounted($product))
                                 <p class="wsus__price">${{ $product->offer_price }}
                                     <del>${{ $product->price }}</del>

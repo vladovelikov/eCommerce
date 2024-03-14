@@ -116,6 +116,11 @@
                                         </select>
                                     </div>
                                     <div class="form-group wsus__input">
+                                        <label>SEO Url</label>
+                                        <input type="text" name="seo_url" class="form-control"
+                                               value="{{old('seo_url')}}">
+                                    </div>
+                                    <div class="form-group wsus__input">
                                         <label>SEO Title</label>
                                         <input type="text" name="seo_title" class="form-control"
                                                value="{{old('seo_title')}}">

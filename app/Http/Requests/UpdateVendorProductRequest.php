@@ -40,7 +40,8 @@ class UpdateVendorProductRequest extends FormRequest
             'product_type' => ['nullable'],
             'seo_title' => ['nullable', 'max:200'],
             'seo_description' => ['nullable', 'max:250'],
-            'status' => ['required']
+            'status' => ['required'],
+            'seo_url' => ['required']
         ];
     }
 }
