@@ -11,7 +11,8 @@ class ProductController extends Controller
 
     public function showProduct(string $seoUrl)
     {
-        $product = Product::where('seo_url', $seoUrl)
+        $product = Product::with(['vendor', 'category', 'productImageGallery', 'variants'])
+            ->where('seo_url', $seoUrl)
             ->where('status', 1)
             ->first();
 

@@ -12,6 +12,7 @@ use App\Http\Controllers\Backend\ProductVariantController;
 use App\Http\Controllers\Backend\ProductVariantItemController;
 use App\Http\Controllers\Backend\ProfileController;
 use App\Http\Controllers\Backend\SellerProductController;
+use App\Http\Controllers\Backend\SettingsController;
 use App\Http\Controllers\Backend\SliderController;
 use App\Http\Controllers\Backend\SubcategoryController;
 use Illuminate\Support\Facades\Route;
@@ -90,6 +91,9 @@ Route::get('seller-products', [SellerProductController::class, 'index'])->name('
 Route::get('seller-pending-products', [SellerProductController::class, 'pendingProducts'])->name('seller-pending-products.index');
 Route::put('update-approval-status', [SellerProductController::class, 'updateApprovalStatus'])->name('update-approval-status');
 
-/** Flash Sale Products */
+/** Settings Routes */
+Route::get('settings', [SettingsController::class, 'index'])->name('settings.index');
+
+/** Flash Sale Products Routes */
 Route::resource('flash-sale', FlashSaleController::class);
 
