@@ -91,9 +91,10 @@ Route::get('seller-products', [SellerProductController::class, 'index'])->name('
 Route::get('seller-pending-products', [SellerProductController::class, 'pendingProducts'])->name('seller-pending-products.index');
 Route::put('update-approval-status', [SellerProductController::class, 'updateApprovalStatus'])->name('update-approval-status');
 
-/** Settings Routes */
-Route::get('settings', [SettingsController::class, 'index'])->name('settings.index');
-
 /** Flash Sale Products Routes */
 Route::resource('flash-sale', FlashSaleController::class);
+
+/** Settings Routes */
+Route::get('settings', [SettingsController::class, 'index'])->name('settings.index');
+Route::put('update-settings', [SettingsController::class, 'update'])->name('settings.update');
 

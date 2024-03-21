@@ -109,6 +109,11 @@
             }
         });
 
+        $('#timezone').select2({
+            placeholder: "",
+            allowClear: true
+        });
+
         $('body').on('click', '.delete-item', function (event) {
             event.preventDefault();
 

@@ -9,6 +9,7 @@ class Settings extends Model
 {
     use HasFactory;
 
+    protected $fillable = ['website_name', 'layout', 'contact_email', 'currency_icon', 'timezone'];
     protected $table = 'settings';
 
 }
