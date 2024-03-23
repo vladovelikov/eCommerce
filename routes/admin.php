@@ -15,6 +15,7 @@ use App\Http\Controllers\Backend\SellerProductController;
 use App\Http\Controllers\Backend\SettingsController;
 use App\Http\Controllers\Backend\SliderController;
 use App\Http\Controllers\Backend\SubcategoryController;
+use App\Http\Controllers\Backend\VoucherController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -93,6 +94,9 @@ Route::put('update-approval-status', [SellerProductController::class, 'updateApp
 
 /** Flash Sale Products Routes */
 Route::resource('flash-sale', FlashSaleController::class);
+
+/** Voucher Routes */
+Route::resource('vouchers', VoucherController::class);
 
 /** Settings Routes */
 Route::get('settings', [SettingsController::class, 'index'])->name('settings.index');
