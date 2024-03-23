@@ -35,7 +35,7 @@
                     <select name="timezone" class="form-control select2" id="timezone">
                         <option value="">Select</option>
                         @foreach(config('settings.timezones') as $key => $timezone)
-                            <option {{@$settings->timezone == $timezone ? 'selected' : ''}} value="{{$timezone}}">{{$timezone}}</option>
+                            <option {{@$settings->timezone == $key ? 'selected' : ''}} value="{{$key}}">{{$timezone}}</option>
                         @endforeach
                     </select>
                 </div>

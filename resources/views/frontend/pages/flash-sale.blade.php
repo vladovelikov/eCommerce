@@ -64,7 +64,7 @@
                                 @if(isDiscounted($product))
                                     <span class="wsus__minus">-{{ $flashSale->discount_percentage }}%</span>
                                 @endif
-                                <a class="wsus__pro_link" href="product_details.html">
+                                <a class="wsus__pro_link" href="{{route('product-details', $product->seo_url)}}">
                                     <img src="{{asset($product->image)}}" alt="product" class="img-fluid w-100 img_1"/>
                                     <img src="
                                 @if(isset($product->productImageGallery[1]->image))
@@ -90,13 +90,13 @@
                                         <i class="fas fa-star-half-alt"></i>
                                         <span>(133 review)</span>
                                     </p>
-                                    <a class="wsus__pro_name" href="#">${{ $product->name }}</a>
+                                    <a class="wsus__pro_name" href="#">{{ $product->name }}</a>
                                     @if(isDiscounted($product))
-                                        <p class="wsus__price">${{ $product->offer_price }}
-                                            <del>${{ $product->price }}</del>
+                                        <p class="wsus__price">{{$settings->currency_icon}}{{$product->offer_price}}
+                                            <del>{{$settings->currency_icon}}{{$product->price}}</del>
                                         </p>
                                     @else
-                                        <p class="wsus__price">${{ $product->price }}</p>
+                                        <p class="wsus__price">{{$settings->currency_icon}}{{$product->price}}</p>
                                     @endif
                                     <a class="add_cart" href="#">add to cart</a>
                                 </div>
@@ -120,8 +120,7 @@
             simplyCountdown('.simply-countdown-one', {
                 year: {{ date('Y', strtotime($flashSale->end_date)) }},
                 month: {{ date('m', strtotime($flashSale->end_date)) }},
-                day: {{ date('d', strtotime($flashSale->end_date)) }},
-                // enableUtc: true
+                day: {{ date('d', strtotime($flashSale->end_date)) }}
             })
         });
     </script>
