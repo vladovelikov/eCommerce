@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Backend;
 use App\DataTables\VoucherDataTable;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreVoucherRequest;
+use App\Http\Requests\UpdateVoucherRequest;
 use App\Models\Voucher;
 use Illuminate\Http\Request;
 
@@ -54,15 +55,23 @@ class VoucherController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $voucher = Voucher::findOrFail($id);
+
+        return view('admin.voucher.edit', compact('voucher'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UpdateVoucherRequest $request, string $id)
     {
-        //
+        $voucher = Voucher::findOrFail($id);
+        $voucher->fill($request->validated());
+        $voucher->save();
+
+        toastr('Updated successfully!', 'success');
+
+        return redirect()->route('admin.vouchers.index');
     }
 
     /**
@@ -70,6 +79,12 @@ class VoucherController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $voucher = Voucher::findOrFail($id);
+        $voucher->delete();
+
+        return response([
+            'status' => 'success',
+            'message' => 'Voucher deleted successfully!'
+        ]);
     }
 }

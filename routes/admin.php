@@ -13,6 +13,7 @@ use App\Http\Controllers\Backend\ProductVariantItemController;
 use App\Http\Controllers\Backend\ProfileController;
 use App\Http\Controllers\Backend\SellerProductController;
 use App\Http\Controllers\Backend\SettingsController;
+use App\Http\Controllers\Backend\ShippingRuleController;
 use App\Http\Controllers\Backend\SliderController;
 use App\Http\Controllers\Backend\SubcategoryController;
 use App\Http\Controllers\Backend\VoucherController;
@@ -102,3 +103,6 @@ Route::resource('vouchers', VoucherController::class);
 Route::get('settings', [SettingsController::class, 'index'])->name('settings.index');
 Route::put('update-settings', [SettingsController::class, 'update'])->name('settings.update');
 
+/** Shipping Rules Routes */
+Route::put('shipping-rules/update-status', [ShippingRuleController::class, 'updateStatus'])->name('shipping-rules.update-status');
+Route::resource('shipping-rules', ShippingRuleController::class);
