@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Backend;
 
 use App\DataTables\VoucherDataTable;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreVoucherRequest;
+use App\Models\Voucher;
 use Illuminate\Http\Request;
 
 class VoucherController extends Controller
@@ -22,15 +24,21 @@ class VoucherController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.voucher.create');
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreVoucherRequest $request)
     {
-        //
+        $voucherData = $request->validated();
+        $voucherData['total_used'] = 0;
+        Voucher::create($voucherData);
+
+        toastr('Created successfully!', 'success');
+
+        return redirect()->route('admin.vouchers.index');
     }
 
     /**

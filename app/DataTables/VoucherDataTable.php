@@ -22,7 +22,13 @@ class VoucherDataTable extends DataTable
     public function dataTable(QueryBuilder $query): EloquentDataTable
     {
         return (new EloquentDataTable($query))
-            ->addColumn('action', 'voucher.action')
+            ->addColumn('action', function($query) {
+                $editBtn = "<a href='" . route('admin.vouchers.edit', $query->id) . "' class='btn btn-primary'><i class='far fa-edit'></i></a>";
+                $deleteBtn = "<a href='" . route('admin.vouchers.destroy', $query->id) . "' class='btn btn-danger ml-2 delete-item'><i class='far fa-trash-alt'></i></a>";
+
+                return $editBtn . $deleteBtn;
+            })
+            ->rawColumns(['action'])
             ->setRowId('id');
     }
 
@@ -62,15 +68,17 @@ class VoucherDataTable extends DataTable
     public function getColumns(): array
     {
         return [
-            Column::computed('action')
-                  ->exportable(false)
-                  ->printable(false)
-                  ->width(60)
-                  ->addClass('text-center'),
             Column::make('id'),
-            Column::make('add your columns'),
-            Column::make('created_at'),
-            Column::make('updated_at'),
+            Column::make('name'),
+            Column::make('discount_type'),
+            Column::make('discount_value'),
+            Column::make('valid_from'),
+            Column::make('valid_to'),
+            Column::computed('action')
+                ->exportable(false)
+                ->printable(false)
+                ->width(150)
+                ->addClass('text-center')
         ];
     }
 
