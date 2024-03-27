@@ -1,5 +1,8 @@
 @extends('frontend.layouts.master')
 
+@section('title')
+    {{$settings->website_name}} || Login
+@endsection
 
 @section('content')
 <!--============================

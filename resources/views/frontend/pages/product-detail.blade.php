@@ -1,5 +1,9 @@
 @extends('frontend.layouts.master')
 
+@section('title')
+    {{$settings->website_name}} || {{$product->name}}
+@endsection
+
 @section('content')
 
     <!--==========================

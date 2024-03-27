@@ -1,5 +1,9 @@
 @extends('vendor.layouts.master')
 
+@section('title')
+    {{$settings->website_name}}
+@endsection
+
 @section('content')
     <section id="wsus__dashboard">
         <div class="container-fluid">

@@ -1,5 +1,8 @@
 @extends('frontend.dashboard.layouts.master')
 
+@section('title')
+    {{$settings->website_name}}
+@endsection
 
 @section('content')
     <!--=============================

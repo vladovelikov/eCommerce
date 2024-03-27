@@ -1,5 +1,9 @@
 @extends('frontend.layouts.master')
 
+@section('title')
+    {{$settings->website_name}}
+@endsection
+
 @section('content')
 <!--==========================
   PRODUCT MODAL VIEW START
