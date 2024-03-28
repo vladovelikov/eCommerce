@@ -9571,3 +9571,42 @@ a:not([href]):not([class]):hover {
     -o-transition: all linear 0.3s;
 }
 
+.product-qty-wrapper {
+    display: flex;
+}
+
+.product-qty {
+    width: 65px;
+    border-radius: 30px;
+    margin: 0px 5px;
+    float: left;
+    height: 35px;
+    padding: 0;
+    font-family: Lato;
+    font-size: 1.2em;
+    text-transform: uppercase;
+    text-align: center;
+    color: #333;
+    border: 1px solid #aaa;
+    background: none;
+    outline: none;
+    pointer-events: none;
+}
+
+.quantity-decrement-btn, .quantity-increment-btn {
+    float: left;
+    display: block;
+    width: 35px;
+    height: 35px;
+    text-align: center;
+    line-height: 35px;
+    color: #fff;
+    background: #aaa;
+    cursor: pointer;
+    transition: all linear .3s;
+    border-radius: 50%;
+    border: 1px solid #aaa;
+    font-size: 20px;
+    -webkit-transition: all linear .3s;
+}
+
