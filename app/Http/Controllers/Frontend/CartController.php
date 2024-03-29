@@ -42,9 +42,13 @@ class CartController extends Controller
 
         Cart::update($rowId, $quantity);
 
+        $totalAmount = $this->cartService->calculateProductTotalAmount($rowId);
+
         return response([
             'status' => 'success',
-            'message' => 'Product quantity updated successfully!'
+            'message' => 'Product quantity updated successfully!',
+            'totalAmount' => $totalAmount
         ]);
     }
+
 }

@@ -49,16 +49,16 @@
                                         product details
                                     </th>
 
-                                    <th class="wsus__pro_status">
-                                        status
+                                    <th class="wsus__pro_tk">
+                                        price per unit
+                                    </th>
+
+                                    <th class="wsus__pro_tk">
+                                        sum
                                     </th>
 
                                     <th class="wsus__pro_select">
                                         quantity
-                                    </th>
-
-                                    <th class="wsus__pro_tk">
-                                        price
                                     </th>
 
                                     <th class="wsus__pro_icon">
@@ -81,12 +81,12 @@
                                             @endif
                                         </td>
 
-                                        <td class="wsus__pro_status">
-                                            @if($cartItem->options->in_stock)
-                                                <p>in stock</p>
-                                            @else
-                                                <p>out of stock</p>
-                                            @endif
+                                        <td class="wsus__pro_tk">
+                                            <h6>{{$settings->currency_icon}}{{$cartItem->price}}</h6>
+                                        </td>
+
+                                        <td class="wsus__pro_tk">
+                                            <h6 id="{{$cartItem->rowId}}">{{$settings->currency_icon}}{{$cartItem->price * $cartItem->qty}}</h6>
                                         </td>
 
 {{--                                        <td class="wsus__pro_select">--}}
@@ -98,13 +98,9 @@
                                         <td class="wsus__pro_select">
                                             <div class="product-qty-wrapper">
                                                 <button class="quantity-decrement-btn">-</button>
-                                                <input class="product-qty" data-row-id="{{$cartItem->rowId}}" type="text" min="1" max="100" value="1"/>
+                                                <input class="product-qty" data-row-id="{{$cartItem->rowId}}" type="text" min="1" max="100" value="{{$cartItem->qty}}"/>
                                                 <button class="quantity-increment-btn">+</button>
                                             </div>
-                                        </td>
-
-                                        <td class="wsus__pro_tk">
-                                            <h6>{{$settings->currency_icon}}{{$cartItem->price}}</h6>
                                         </td>
 
                                         <td class="wsus__pro_icon">
@@ -181,6 +177,7 @@
                 }
             });
 
+            //increment product quantity
             $('.quantity-increment-btn').on('click', function () {
                 let input = $(this).siblings('.product-qty');
                 let rowId = input.data('row-id');
@@ -196,6 +193,37 @@
                     },
                     success: function (response) {
                         if (response.status === 'success') {
+                            let productId = '#' + rowId;
+                            $(productId).text("{{$settings->currency_icon}}" + response.totalAmount);
+                            toastr.success(response.message);
+                        } else {
+                            toastr.error(response.message);
+                        }
+                    },
+                    error: function (error) {
+                        toastr.error(error.message);
+                    }
+                })
+            });
+
+            //decrement product quantity
+            $('.quantity-decrement-btn').on('click', function () {
+                let input = $(this).siblings('.product-qty');
+                let rowId = input.data('row-id');
+                let quantity = parseInt(input.val()) - 1;
+                input.val(quantity);
+
+                $.ajax({
+                    url: "{{route('cart.update-quantity')}}",
+                    method: 'POST',
+                    data: {
+                        rowId: rowId,
+                        quantity: quantity
+                    },
+                    success: function (response) {
+                        if (response.status === 'success') {
+                            let productId = '#' + rowId;
+                            $(productId).text("{{$settings->currency_icon}}" + response.totalAmount);
                             toastr.success(response.message);
                         } else {
                             toastr.error(response.message);

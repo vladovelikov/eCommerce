@@ -30,37 +30,28 @@ class CartService
         }
 
         $cartData = [];
-        $cartData['id'] = $product->id;
-        $cartData['name'] = $product->name;
-        $cartData['qty'] = $productData['quantity'];
-        $cartData['price'] = $this->calculateProductTotalAmount($product);
         //TODO: add products weight
         $cartData['weight'] = 10;
         $cartData['options']['variants'] = $variants;
         $cartData['options']['variants_total'] = $variantsTotalAmount;
         $cartData['options']['image'] = $product->image;
-        $cartData['options']['in_stock'] = $product->quantity > 0;
 
         Cart::add(
             $product->id,
             $product->name,
             $productData['quantity'],
-            $this->calculateProductTotalAmount($product),
+            isDiscounted($product) ? $product->offer_price : $product->price,
             10,
             $cartData['options']
         );
 
     }
 
-    private function calculateProductTotalAmount($product)
+    public function calculateProductTotalAmount($rowId)
     {
-        if (isDiscounted($product)) {
-            $productPrice = $product->offer_price;
-        } else {
-            $productPrice = $product->price;
-        }
+        $product = Cart::get($rowId);
 
-        return $productPrice;
+        return $product->price * $product->qty;
     }
 
 }
