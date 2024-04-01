@@ -23,7 +23,7 @@ class CartController extends Controller
 
         return response([
             'status' => 'success',
-            'message' => 'Added to cart successfully!'
+            'message' => 'Product added to cart successfully!'
         ]);
     }
 
@@ -51,4 +51,44 @@ class CartController extends Controller
         ]);
     }
 
+    public function getCartCount()
+    {
+        return Cart::content()->count();
+    }
+
+    /** Fetch cart products */
+    public function getCartProducts()
+    {
+        return Cart::content();
+    }
+
+    /** Clear all cart products */
+    public function clearCart(Request $request)
+    {
+        Cart::destroy();
+
+        return response([
+            'status' => 'success',
+            'message' => 'Cart cleared successfully!'
+        ]);
+    }
+
+    /** Remove product from sidebar cart */
+    public function removeSidebarProduct(Request $request)
+    {
+        Cart::remove($request->rowId);
+
+        return response([
+            'status' => 'success',
+            'message' => 'Product removed successfully'
+        ]);
+    }
+
+    /** Remove product from the cart */
+    public function removeProduct(string $rowId)
+    {
+        Cart::remove($rowId);
+
+        return redirect()->route('cart-details');
+    }
 }

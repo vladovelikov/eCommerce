@@ -35,6 +35,7 @@ class CartService
         $cartData['options']['variants'] = $variants;
         $cartData['options']['variants_total'] = $variantsTotalAmount;
         $cartData['options']['image'] = $product->image;
+        $cartData['options']['seo_url'] = $product->seo_url;
 
         Cart::add(
             $product->id,
