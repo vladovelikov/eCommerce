@@ -48,6 +48,17 @@ class CartService
 
     }
 
+    public function getSubtotalAmount()
+    {
+        $subtotalAmount = 0;
+
+        foreach (Cart::content() as $product) {
+            $subtotalAmount += $this->calculateProductTotalAmount($product->rowId);
+        }
+
+        return $subtotalAmount;
+    }
+
     public function calculateProductTotalAmount($rowId)
     {
         $product = Cart::get($rowId);

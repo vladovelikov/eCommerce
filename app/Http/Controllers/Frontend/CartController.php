@@ -62,6 +62,12 @@ class CartController extends Controller
         return Cart::content();
     }
 
+    /** Fetch cart subtotal amount */
+    public function getCartSubtotal()
+    {
+        return $this->cartService->getSubtotalAmount();
+    }
+
     /** Clear all cart products */
     public function clearCart(Request $request)
     {

@@ -48,6 +48,7 @@ Route::get('cart/remove-product/{rowId}', [CartController::class, 'removeProduct
 Route::get('cart-count', [CartController::class, 'getCartCount'])->name('cart-count');
 Route::get('cart-products', [CartController::class, 'getCartProducts'])->name('cart-products');
 Route::post('cart/remove-sidebar-product', [CartController::class, 'removeSidebarProduct'])->name('cart.remove-sidebar-product');
+Route::get('cart-subtotal', [CartController::class, 'getCartSubtotal'])->name('cart-subtotal');
 
 //User dashboard routes
 Route::group(['middleware' => ['auth', 'verified'], 'prefix' => 'user', 'as' => 'user.'], function () {

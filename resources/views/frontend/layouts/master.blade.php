@@ -164,6 +164,8 @@
     @endif
 </script>
 
+@include('frontend.layouts.scripts')
+
 @stack('scripts')
 
 </body>

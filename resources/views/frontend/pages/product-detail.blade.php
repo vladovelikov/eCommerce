@@ -769,6 +769,7 @@
                     success: function(data) {
                         getCartCount();
                         fetchSidebarCartProducts();
+                        getSidebarCartSubtotal();
                         toastr.success(data.message);
                     },
                     error: function() {
@@ -777,6 +778,7 @@
                 })
             })
 
+            //remove product from sidebar cart
             $('body').on('click', '.remove_sidebar_product', function(e) {
                 e.preventDefault();
                 let rowId = $(this).data('row-id');
@@ -790,6 +792,8 @@
                     success: function(data) {
                         getCartCount();
                         fetchSidebarCartProducts();
+                        getSidebarCartSubtotal();
+
                         toastr.success(data.message);
                     },
                     error: function() {
@@ -797,6 +801,21 @@
                     }
                 })
             });
+
+            //get sidebar cart subtotal
+            function getSidebarCartSubtotal()
+            {
+                $.ajax({
+                    method: 'GET',
+                    url: "{{route('cart-subtotal')}}",
+                    success: function(data) {
+                        $('#mini_cart_subtotal').text("{{$settings->currency_icon}}" + data);
+                    },
+                    error: function() {
+
+                    }
+                })
+            }
 
             function getCartCount() {
                 $.ajax({
@@ -811,6 +830,7 @@
                 })
             }
 
+            //show products in sidebar cart
             function fetchSidebarCartProducts() {
                 $.ajax({
                     method: 'GET',
@@ -829,10 +849,18 @@
                                 <div class="wsus__cart_text">
                                     <a class="wsus__cart_title" href="{{url("product-detail")}}/${product.options.seo_url}">${product.name}</a>
                                     <p>{{$settings->currency_icon}}${product.price}</p>
+                                    <small>Quantity: ${product.qty}</small>
                                 </div>
                             </li>`;
                         }
-                        $('.mini_cart_wrapper').html(html);
+
+                        if (html !== '') {
+                            $('.mini_cart_wrapper').html(html);
+                            $('.mini_cart_actions').removeClass('d-none');
+                        } else {
+                            $('.mini_cart_wrapper').html('<li>Your shopping cart is empty</li>');
+                            $('.mini_cart_actions').addClass('d-none');
+                        }
                     },
                     error: function(error) {
                         console.log(error);

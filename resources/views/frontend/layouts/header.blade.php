@@ -45,23 +45,30 @@
     <div class="wsus__mini_cart">
         <h4>shopping cart <span class="wsus_close_mini_cart"><i class="far fa-times"></i></span></h4>
         <ul class="mini_cart_wrapper">
-{{--            @foreach (Cart::content() as $cartItem)--}}
-{{--                <li>--}}
-{{--                    <div class="wsus__cart_img">--}}
-{{--                        <a href="{{route('product-details', $cartItem->options->seo_url)}}"><img src="{{asset($cartItem->options->image)}}" alt="product" class="img-fluid w-100"></a>--}}
-{{--                        <a class="wsis__del_icon remove_sidebar_product" data-row-id="{{$cartItem->rowId}}" href="#"><i class="fas fa-minus-circle"></i></a>--}}
-{{--                    </div>--}}
-{{--                    <div class="wsus__cart_text">--}}
-{{--                        <a class="wsus__cart_title" href="#">{{$cartItem->name}}</a>--}}
-{{--                        <p>{{$settings->currency_icon}}{{$cartItem->price}}</p>--}}
-{{--                    </div>--}}
-{{--                </li>--}}
-{{--            @endforeach--}}
+            @if (Cart::content()->count() > 0)
+                @foreach (Cart::content() as $cartItem)
+                    <li>
+                        <div class="wsus__cart_img">
+                            <a href="{{route('product-details', $cartItem->options->seo_url)}}"><img src="{{asset($cartItem->options->image)}}" alt="product" class="img-fluid w-100"></a>
+                            <a class="wsis__del_icon remove_sidebar_product" data-row-id="{{$cartItem->rowId}}" href="#"><i class="fas fa-minus-circle"></i></a>
+                        </div>
+                        <div class="wsus__cart_text">
+                            <a class="wsus__cart_title" href="#">{{$cartItem->name}}</a>
+                            <p>{{$settings->currency_icon}}{{$cartItem->price}}</p>
+                            <small>Quantity: {{$cartItem->qty}}</small>
+                        </div>
+                    </li>
+                @endforeach
+            @else
+                <li>Your shopping cart is empty</li>
+            @endif
         </ul>
-        <h5>sub total <span>$3540</span></h5>
-        <div class="wsus__minicart_btn_area">
-            <a class="common_btn" href="{{route('cart-details')}}">view cart</a>
-            <a class="common_btn" href="check_out.html">checkout</a>
+        <div class="mini_cart_actions {{Cart::content()->count() == 0 ? 'd-none' : ''}}">
+            <h5>sub total <span id="mini_cart_subtotal">{{$settings->currency_icon}}{{getCartSubtotal()}}</span></h5>
+            <div class="wsus__minicart_btn_area">
+                <a class="common_btn" href="{{route('cart-details')}}">view cart</a>
+                <a class="common_btn" href="check_out.html">checkout</a>
+            </div>
         </div>
     </div>
 

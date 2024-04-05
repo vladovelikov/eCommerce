@@ -1,7 +1,8 @@
 <?php
 
-/** Set Sidebar item active */
+use Gloudemans\Shoppingcart\Facades\Cart;
 
+/** Set Sidebar item active */
 function setActive(array $route)
 {
     if (is_array($route)) {
@@ -13,6 +14,7 @@ function setActive(array $route)
     }
 }
 
+/** Check if a product is discounted */
 function isDiscounted($product): bool
 {
     $currentDate = date('Y-m-d');
@@ -26,6 +28,7 @@ function isDiscounted($product): bool
     return false;
 }
 
+/** Get product type */
 function productType(string $type): string
 {
     switch ($type) {
@@ -45,4 +48,16 @@ function productType(string $type): string
             return '';
 
     }
+}
+
+/** Get cart subtotal amount */
+function getCartSubtotal()
+{
+    $subtotalAmount = 0;
+
+    foreach (Cart::content() as $product) {
+        $subtotalAmount += $product->price * $product->qty;
+    }
+
+    return $subtotalAmount;
 }
