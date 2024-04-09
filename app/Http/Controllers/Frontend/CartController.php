@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\AddToCartRequest;
+use App\Models\Product;
 use App\Services\CartService;
 use Gloudemans\Shoppingcart\Facades\Cart;
 use Illuminate\Http\Request;
@@ -19,7 +20,14 @@ class CartController extends Controller
     /** Add item to cart */
     public function addToCart(AddToCartRequest $request)
     {
-        $this->cartService->addProduct($request->validated());
+        $isAdded = $this->cartService->addProduct($request->validated());
+
+        if (!$isAdded) {
+            return response([
+                'status' => 'error',
+                'message' => 'Quantity not available!'
+            ]);
+        }
 
         return response([
             'status' => 'success',
@@ -37,12 +45,17 @@ class CartController extends Controller
 
     public function updateProductQuantity(Request $request)
     {
-        $rowId = $request->input('rowId');
-        $quantity = $request->input('quantity');
+        $totalAmount = $this->cartService->updateProductQuantity(
+            $request->input('rowId'),
+            $request->input('quantity')
+        );
 
-        Cart::update($rowId, $quantity);
-
-        $totalAmount = $this->cartService->calculateProductTotalAmount($rowId);
+        if (!$totalAmount) {
+            return response([
+                'status' => 'error',
+                'message' => 'Quantity not available!'
+            ]);
+        }
 
         return response([
             'status' => 'success',

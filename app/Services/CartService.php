@@ -9,11 +9,15 @@ use Gloudemans\Shoppingcart\Facades\Cart;
 class CartService
 {
 
-    public function addProduct(array $productData)
+    public function addProduct(array $productData): bool
     {
         $product = Product::with(['variants'])
             ->where('id', $productData['product_id'])
             ->first();
+
+        if ($product->quantity < $productData['quantity']) {
+            return false;
+        }
 
         $variants = [];
         $variantsTotalAmount = 0;
@@ -46,6 +50,7 @@ class CartService
             $cartData['options']
         );
 
+        return true;
     }
 
     public function getSubtotalAmount()
@@ -64,6 +69,22 @@ class CartService
         $product = Cart::get($rowId);
 
         return $product->price * $product->qty;
+    }
+
+    public function updateProductQuantity($rowId, $quantity)
+    {
+        $productId = Cart::get($rowId)->id;
+        $product = Product::findOrFail($productId);
+
+        if ($product->quantity < $quantity) {
+            return false;
+        }
+
+        Cart::update($rowId, $quantity);
+
+        $totalAmount = $this->calculateProductTotalAmount($rowId);
+
+        return $totalAmount;
     }
 
 }

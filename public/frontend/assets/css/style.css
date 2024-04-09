@@ -151,6 +151,7 @@ p {
   -moz-border-radius: 3px;
   -ms-border-radius: 3px;
   -o-border-radius: 3px;
+  border: none;
 }
 
 .add_cart:hover {
@@ -9615,5 +9616,16 @@ a:not([href]):not([class]):hover {
     width: 43px;
     height: 36px;
     padding-left: 5px;
+}
+
+.stock_out {
+    background: #9a2f2f;
+    color: #fff;
+    text-transform: capitalize;
+    font-size: 14px;
+    font-weight: 600;
+    padding: 3px 10px;
+    border-radius: 2px;
+    margin-right: 5px;
 }
 

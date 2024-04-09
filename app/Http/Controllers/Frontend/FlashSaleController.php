@@ -13,11 +13,12 @@ class FlashSaleController extends Controller
     {
         $flashSale = FlashSale::first();
 
-        $flashSaleProducts = Product::where('offer_start_date', '<=', date('Y-m-d'))
+        $flashSaleProducts = Product::with(['productImageGallery', 'variants', 'category'])
+            ->where('offer_start_date', '<=', date('Y-m-d'))
             ->where('offer_end_date', '>=', date('Y-m-d'))
             ->where('status', 1)
-            ->orderBy('id', 'DESC')
-            ->paginate(1);
+            ->orderBy('id', 'ASC')
+            ->paginate(6);
 
         return view('frontend.pages.flash-sale', compact('flashSale', 'flashSaleProducts'));
     }

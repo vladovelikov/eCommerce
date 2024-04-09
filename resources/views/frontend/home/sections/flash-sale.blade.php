@@ -29,12 +29,6 @@
                                 @endif
                             " alt="product" class="img-fluid w-100 img_2"/>
                         </a>
-{{--                        <ul class="wsus__single_pro_icon">--}}
-{{--                            <li><a href="#" data-bs-toggle="modal" data-bs-target="#exampleModal-{{$product->id}}"><i--}}
-{{--                                        class="far fa-eye"></i></a></li>--}}
-{{--                            <li><a href="#"><i class="far fa-heart"></i></a></li>--}}
-{{--                            <li><a href="#"><i class="far fa-random"></i></a>--}}
-{{--                        </ul>--}}
                         <div class="wsus__product_details">
                             <a class="wsus__category" href="#">{{ $product->category->name }} </a>
                             <p class="wsus__pro_rating">
@@ -53,7 +47,19 @@
                             @else
                                 <p class="wsus__price">{{$settings->currency_icon}}{{$product->price}}</p>
                             @endif
-                            <a class="add_cart" href="#">add to cart</a>
+                            <form method="POST" class="shopping-cart-form">
+                                @csrf
+                                @foreach($product->variants as $variant)
+                                        <select class="d-none" name="variant_items[]">
+                                            @foreach($variant->productVariantItems as $variantItem)
+                                                <option {{$variantItem->is_default == 1 ? 'selected' : ''}} value="{{$variantItem->id}}">{{$variantItem->name}}</option>
+                                            @endforeach
+                                        </select>
+                                @endforeach
+                                <input type="hidden" name="product_id" value="{{$product->id}}">
+                                <input type="hidden" name="quantity" type="text" min="1" max="1" value="1"/>
+                                <button type="submit" class="add_cart">add to cart</button>
+                            </form>
                         </div>
                     </div>
             </div>

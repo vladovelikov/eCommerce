@@ -19,7 +19,7 @@ class HomeController extends Controller
         $sliders = Slider::where('status', 1)->orderBy('order', 'asc')->get();
         $flashSale = FlashSale::first();
 
-        $flashSaleProducts = Product::with(['category', 'productImageGallery'])
+        $flashSaleProducts = Product::with(['category', 'productImageGallery', 'variants'])
             ->where('offer_start_date', '<=', date('Y-m-d'))
             ->where('offer_end_date', '>=', date('Y-m-d'))
             ->where('status', 1)

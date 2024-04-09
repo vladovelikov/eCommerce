@@ -83,43 +83,44 @@
                                             <li><a href="#">XL</a></li>
                                         </ul>
                                     </div>
-                                        <div class="wsus__quentity">
-                                            <h5>quantity:</h5>
-                                            <div class="select_number">
-                                                <input class="number_area" name="quantity" type="text" min="1" max="100" value="1"/>
-                                            </div>
-                                            <h3>$50.00</h3>
+                                    <div class="wsus__quentity">
+                                        <h5>quantity:</h5>
+                                        <div class="select_number">
+                                            <input class="number_area" name="quantity" type="text" min="1" max="100"
+                                                   value="1"/>
                                         </div>
-                                        <div class="wsus__selectbox">
-                                            <div class="row">
-                                                <div class="col-xl-6 col-sm-6">
-                                                    <h5 class="mb-2">select:</h5>
-                                                    <select class="select_2" name="state">
-                                                        <option>default select</option>
-                                                        <option>select 1</option>
-                                                        <option>select 2</option>
-                                                        <option>select 3</option>
-                                                        <option>select 4</option>
-                                                    </select>
-                                                </div>
-                                                <div class="col-xl-6 col-sm-6">
-                                                    <h5 class="mb-2">select:</h5>
-                                                    <select class="select_2" name="state">
-                                                        <option>default select</option>
-                                                        <option>select 1</option>
-                                                        <option>select 2</option>
-                                                        <option>select 3</option>
-                                                        <option>select 4</option>
-                                                    </select>
-                                                </div>
+                                        <h3>$50.00</h3>
+                                    </div>
+                                    <div class="wsus__selectbox">
+                                        <div class="row">
+                                            <div class="col-xl-6 col-sm-6">
+                                                <h5 class="mb-2">select:</h5>
+                                                <select class="select_2" name="state">
+                                                    <option>default select</option>
+                                                    <option>select 1</option>
+                                                    <option>select 2</option>
+                                                    <option>select 3</option>
+                                                    <option>select 4</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-xl-6 col-sm-6">
+                                                <h5 class="mb-2">select:</h5>
+                                                <select class="select_2" name="state">
+                                                    <option>default select</option>
+                                                    <option>select 1</option>
+                                                    <option>select 2</option>
+                                                    <option>select 3</option>
+                                                    <option>select 4</option>
+                                                </select>
                                             </div>
                                         </div>
-                                        <ul class="wsus__button_area">
-                                            <li><a class="add_cart" href="#">add to cart</a></li>
-                                            <li><a class="buy_now" href="#">buy now</a></li>
-                                            <li><a href="#"><i class="fal fa-heart"></i></a></li>
-                                            <li><a href="#"><i class="far fa-random"></i></a></li>
-                                        </ul>
+                                    </div>
+                                    <ul class="wsus__button_area">
+                                        <li><a class="add_cart" href="#">add to cart</a></li>
+                                        <li><a class="buy_now" href="#">buy now</a></li>
+                                        <li><a href="#"><i class="fal fa-heart"></i></a></li>
+                                        <li><a href="#"><i class="far fa-random"></i></a></li>
+                                    </ul>
                                     <p class="brand_model"><span>model :</span> 12345670</p>
                                     <p class="brand_model"><span>brand :</span> The Northland</p>
                                     <div class="wsus__pro_det_share">
@@ -210,7 +211,11 @@
                     <div class="col-xl-5 col-md-7 col-lg-7">
                         <div class="wsus__pro_details_text">
                             <a class="title" href="javascript:;">{{$product->name}}</a>
-                            <p class="wsus__stock_area"><span class="in_stock">in stock</span> (167 item)</p>
+                            @if($product->quantity > 0)
+                                <p class="wsus__stock_area"><span class="in_stock">in stock</span> ({{$product->quantity}} items)</p>
+                            @else
+                                <p class="wsus__stock_area"><span class="stock_out">out of stock</span></p>
+                            @endif
                             @if(isDiscounted($product))
                                 <h4>{{$settings->currency_icon}}{{$product->offer_price}}
                                     <del>{{$settings->currency_icon}}{{$product->price}}</del>
@@ -228,10 +233,10 @@
                             </p>
                             <p class="description">{{$product->short_description}}</p>
 
-{{--                            <div class="wsus_pro_hot_deals">--}}
-{{--                                <h5>offer ending time : </h5>--}}
-{{--                                <div class="simply-countdown simply-countdown-one"></div>--}}
-{{--                            </div>--}}
+                            {{--                            <div class="wsus_pro_hot_deals">--}}
+                            {{--                                <h5>offer ending time : </h5>--}}
+                            {{--                                <div class="simply-countdown simply-countdown-one"></div>--}}
+                            {{--                            </div>--}}
 
                             <form method="POST" class="shopping-cart-form">
                                 @csrf
@@ -239,26 +244,34 @@
                                     <div class="row">
                                         <input type="hidden" name="product_id" value="{{$product->id}}">
                                         @foreach($product->variants as $variant)
-                                            <div class="col-xl-6 col-sm-6">
-                                                <h5 class="mb-2">{{$variant->name}}:</h5>
-                                                <select class="select_2" name="variant_items[]">
-                                                    @foreach($variant->productVariantItems as $variantItem)
-                                                        <option {{$variantItem->is_default == 1 ? 'selected' : ''}} value="{{$variantItem->id}}">{{$variantItem->name}}</option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
+                                            @if($variant->status == 1)
+                                                <div class="col-xl-6 col-sm-6">
+                                                    <h5 class="mb-2">{{$variant->name}}:</h5>
+                                                    <select class="select_2" name="variant_items[]">
+                                                        @foreach($variant->productVariantItems as $variantItem)
+                                                            @if($variantItem->status == 1)
+                                                                <option
+                                                                    {{$variantItem->is_default == 1 ? 'selected' : ''}} value="{{$variantItem->id}}">{{$variantItem->name}}</option>
+                                                            @endif
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                            @endif
                                         @endforeach
                                     </div>
                                 </div>
                                 <div class="wsus__quentity">
                                     <h5>quantity:</h5>
                                     <div class="select_number">
-                                        <input name="quantity" class="number_area" type="text" min="1" max="100" value="1"/>
+                                        <input name="quantity" class="number_area" type="text" min="1" max="100"
+                                               value="1"/>
                                     </div>
                                     {{--                                <h3>$50.00</h3>--}}
                                 </div>
                                 <ul class="wsus__button_area">
-                                    <li><button type="submit" class="add_cart">add to cart</button></li>
+                                    <li>
+                                        <button type="submit" class="add_cart">add to cart</button>
+                                    </li>
                                     <li><a class="buy_now" href="#">buy now</a></li>
                                     <li><a href="#"><i class="fal fa-heart"></i></a></li>
                                     <li><a href="#"><i class="far fa-random"></i></a></li>
@@ -349,7 +362,8 @@
                                         <div class="row">
                                             <div class="col-xl-6 col-xxl-5 col-md-6">
                                                 <div class="wsus__vebdor_img">
-                                                    <img src="{{asset($product->vendor->banner)}}" alt="vensor" class="img-fluid w-100">
+                                                    <img src="{{asset($product->vendor->banner)}}" alt="vensor"
+                                                         class="img-fluid w-100">
                                                 </div>
                                             </div>
                                             <div class="col-xl-6 col-xxl-7 col-md-6 mt-4 mt-md-0">
@@ -568,305 +582,180 @@
     <!--============================
         RELATED PRODUCT START
     ==============================-->
-{{--    <section id="wsus__flash_sell">--}}
-{{--        <div class="container">--}}
-{{--            <div class="row">--}}
-{{--                <div class="col-xl-12">--}}
-{{--                    <div class="wsus__section_header">--}}
-{{--                        <h3>Related Products</h3>--}}
-{{--                        <a class="see_btn" href="#">see more <i class="fas fa-caret-right"></i></a>--}}
-{{--                    </div>--}}
-{{--                </div>--}}
-{{--            </div>--}}
-{{--            <div class="row flash_sell_slider">--}}
-{{--                <div class="col-xl-3 col-sm-6 col-lg-4">--}}
-{{--                    <div class="wsus__product_item">--}}
-{{--                        <span class="wsus__new">New</span>--}}
-{{--                        <span class="wsus__minus">-20%</span>--}}
-{{--                        <a class="wsus__pro_link" href="product_details.html">--}}
-{{--                            <img src="images/pro3.jpg" alt="product" class="img-fluid w-100 img_1"/>--}}
-{{--                            <img src="images/pro3_3.jpg" alt="product" class="img-fluid w-100 img_2"/>--}}
-{{--                        </a>--}}
-{{--                        <ul class="wsus__single_pro_icon">--}}
-{{--                            <li><a href="#" data-bs-toggle="modal" data-bs-target="#exampleModal2"><i--}}
-{{--                                        class="far fa-eye"></i></a></li>--}}
-{{--                            <li><a href="#"><i class="far fa-heart"></i></a></li>--}}
-{{--                            <li><a href="#"><i class="far fa-random"></i></a>--}}
-{{--                        </ul>--}}
-{{--                        <div class="wsus__product_details">--}}
-{{--                            <a class="wsus__category" href="#">Electronics </a>--}}
-{{--                            <p class="wsus__pro_rating">--}}
-{{--                                <i class="fas fa-star"></i>--}}
-{{--                                <i class="fas fa-star"></i>--}}
-{{--                                <i class="fas fa-star"></i>--}}
-{{--                                <i class="fas fa-star"></i>--}}
-{{--                                <i class="fas fa-star-half-alt"></i>--}}
-{{--                                <span>(133 review)</span>--}}
-{{--                            </p>--}}
-{{--                            <a class="wsus__pro_name" href="#">hp 24" FHD monitore</a>--}}
-{{--                            <p class="wsus__price">$159--}}
-{{--                                <del>$200</del>--}}
-{{--                            </p>--}}
-{{--                            <a class="add_cart" href="#">add to cart</a>--}}
-{{--                        </div>--}}
-{{--                    </div>--}}
-{{--                </div>--}}
-{{--                <div class="col-xl-3 col-sm-6 col-lg-4">--}}
-{{--                    <div class="wsus__product_item">--}}
-{{--                        <span class="wsus__new">New</span>--}}
-{{--                        <a class="wsus__pro_link" href="product_details.html">--}}
-{{--                            <img src="images/pro4.jpg" alt="product" class="img-fluid w-100 img_1"/>--}}
-{{--                            <img src="images/pro4_4.jpg" alt="product" class="img-fluid w-100 img_2"/>--}}
-{{--                        </a>--}}
-{{--                        <ul class="wsus__single_pro_icon">--}}
-{{--                            <li><a href="#" data-bs-toggle="modal" data-bs-target="#exampleModal2"><i--}}
-{{--                                        class="far fa-eye"></i></a></li>--}}
-{{--                            <li><a href="#"><i class="far fa-heart"></i></a></li>--}}
-{{--                            <li><a href="#"><i class="far fa-random"></i></a>--}}
-{{--                        </ul>--}}
-{{--                        <div class="wsus__product_details">--}}
-{{--                            <a class="wsus__category" href="#">fashion </a>--}}
-{{--                            <p class="wsus__pro_rating">--}}
-{{--                                <i class="fas fa-star"></i>--}}
-{{--                                <i class="fas fa-star"></i>--}}
-{{--                                <i class="fas fa-star"></i>--}}
-{{--                                <i class="fas fa-star"></i>--}}
-{{--                                <i class="fas fa-star-half-alt"></i>--}}
-{{--                                <span>(17 review)</span>--}}
-{{--                            </p>--}}
-{{--                            <a class="wsus__pro_name" href="#">men's casual fashion watch</a>--}}
-{{--                            <p class="wsus__price">$159--}}
-{{--                                <del>$200</del>--}}
-{{--                            </p>--}}
-{{--                            <a class="add_cart" href="#">add to cart</a>--}}
-{{--                        </div>--}}
-{{--                    </div>--}}
-{{--                </div>--}}
-{{--                <div class="col-xl-3 col-sm-6 col-lg-4">--}}
-{{--                    <div class="wsus__product_item">--}}
-{{--                        <span class="wsus__minus">-20%</span>--}}
-{{--                        <a class="wsus__pro_link" href="product_details.html">--}}
-{{--                            <img src="images/pro9.jpg" alt="product" class="img-fluid w-100 img_1"/>--}}
-{{--                            <img src="images/pro9_9.jpg" alt="product" class="img-fluid w-100 img_2"/>--}}
-{{--                        </a>--}}
-{{--                        <ul class="wsus__single_pro_icon">--}}
-{{--                            <li><a href="#" data-bs-toggle="modal" data-bs-target="#exampleModal2"><i--}}
-{{--                                        class="far fa-eye"></i></a></li>--}}
-{{--                            <li><a href="#"><i class="far fa-heart"></i></a></li>--}}
-{{--                            <li><a href="#"><i class="far fa-random"></i></a>--}}
-{{--                        </ul>--}}
-{{--                        <div class="wsus__product_details">--}}
-{{--                            <a class="wsus__category" href="#">fashion </a>--}}
-{{--                            <p class="wsus__pro_rating">--}}
-{{--                                <i class="fas fa-star"></i>--}}
-{{--                                <i class="fas fa-star"></i>--}}
-{{--                                <i class="fas fa-star"></i>--}}
-{{--                                <i class="fas fa-star"></i>--}}
-{{--                                <i class="fas fa-star-half-alt"></i>--}}
-{{--                                <span>(120 review)</span>--}}
-{{--                            </p>--}}
-{{--                            <a class="wsus__pro_name" href="#">men's fashion sholder bag</a>--}}
-{{--                            <p class="wsus__price">$159--}}
-{{--                                <del>$200</del>--}}
-{{--                            </p>--}}
-{{--                            <a class="add_cart" href="#">add to cart</a>--}}
-{{--                        </div>--}}
-{{--                    </div>--}}
-{{--                </div>--}}
-{{--                <div class="col-xl-3 col-sm-6 col-lg-4">--}}
-{{--                    <div class="wsus__product_item">--}}
-{{--                        <span class="wsus__new">New</span>--}}
-{{--                        <span class="wsus__minus">-20%</span>--}}
-{{--                        <a class="wsus__pro_link" href="product_details.html">--}}
-{{--                            <img src="images/pro2.jpg" alt="product" class="img-fluid w-100 img_1"/>--}}
-{{--                            <img src="images/pro2_2.jpg" alt="product" class="img-fluid w-100 img_2"/>--}}
-{{--                        </a>--}}
-{{--                        <ul class="wsus__single_pro_icon">--}}
-{{--                            <li><a href="#" data-bs-toggle="modal" data-bs-target="#exampleModal2"><i--}}
-{{--                                        class="far fa-eye"></i></a></li>--}}
-{{--                            <li><a href="#"><i class="far fa-heart"></i></a></li>--}}
-{{--                            <li><a href="#"><i class="far fa-random"></i></a>--}}
-{{--                        </ul>--}}
-{{--                        <div class="wsus__product_details">--}}
-{{--                            <a class="wsus__category" href="#">fashion </a>--}}
-{{--                            <p class="wsus__pro_rating">--}}
-{{--                                <i class="fas fa-star"></i>--}}
-{{--                                <i class="fas fa-star"></i>--}}
-{{--                                <i class="fas fa-star"></i>--}}
-{{--                                <i class="fas fa-star"></i>--}}
-{{--                                <i class="fas fa-star-half-alt"></i>--}}
-{{--                                <span>(72 review)</span>--}}
-{{--                            </p>--}}
-{{--                            <a class="wsus__pro_name" href="#">men's casual shoes</a>--}}
-{{--                            <p class="wsus__price">$159--}}
-{{--                                <del>$200</del>--}}
-{{--                            </p>--}}
-{{--                            <a class="add_cart" href="#">add to cart</a>--}}
-{{--                        </div>--}}
-{{--                    </div>--}}
-{{--                </div>--}}
-{{--                <div class="col-xl-3 col-sm-6 col-lg-4">--}}
-{{--                    <div class="wsus__product_item">--}}
-{{--                        <span class="wsus__minus">-20%</span>--}}
-{{--                        <a class="wsus__pro_link" href="product_details.html">--}}
-{{--                            <img src="images/pro4.jpg" alt="product" class="img-fluid w-100 img_1"/>--}}
-{{--                            <img src="images/pro4_4.jpg" alt="product" class="img-fluid w-100 img_2"/>--}}
-{{--                        </a>--}}
-{{--                        <ul class="wsus__single_pro_icon">--}}
-{{--                            <li><a href="#" data-bs-toggle="modal" data-bs-target="#exampleModal2"><i--}}
-{{--                                        class="far fa-eye"></i></a></li>--}}
-{{--                            <li><a href="#"><i class="far fa-heart"></i></a></li>--}}
-{{--                            <li><a href="#"><i class="far fa-random"></i></a>--}}
-{{--                        </ul>--}}
-{{--                        <div class="wsus__product_details">--}}
-{{--                            <a class="wsus__category" href="#">fashion </a>--}}
-{{--                            <p class="wsus__pro_rating">--}}
-{{--                                <i class="fas fa-star"></i>--}}
-{{--                                <i class="fas fa-star"></i>--}}
-{{--                                <i class="fas fa-star"></i>--}}
-{{--                                <i class="fas fa-star"></i>--}}
-{{--                                <i class="fas fa-star-half-alt"></i>--}}
-{{--                                <span>(17 review)</span>--}}
-{{--                            </p>--}}
-{{--                            <a class="wsus__pro_name" href="#">men's casual fashion watch</a>--}}
-{{--                            <p class="wsus__price">$159--}}
-{{--                                <del>$200</del>--}}
-{{--                            </p>--}}
-{{--                            <a class="add_cart" href="#">add to cart</a>--}}
-{{--                        </div>--}}
-{{--                    </div>--}}
-{{--                </div>--}}
+    {{--    <section id="wsus__flash_sell">--}}
+    {{--        <div class="container">--}}
+    {{--            <div class="row">--}}
+    {{--                <div class="col-xl-12">--}}
+    {{--                    <div class="wsus__section_header">--}}
+    {{--                        <h3>Related Products</h3>--}}
+    {{--                        <a class="see_btn" href="#">see more <i class="fas fa-caret-right"></i></a>--}}
+    {{--                    </div>--}}
+    {{--                </div>--}}
+    {{--            </div>--}}
+    {{--            <div class="row flash_sell_slider">--}}
+    {{--                <div class="col-xl-3 col-sm-6 col-lg-4">--}}
+    {{--                    <div class="wsus__product_item">--}}
+    {{--                        <span class="wsus__new">New</span>--}}
+    {{--                        <span class="wsus__minus">-20%</span>--}}
+    {{--                        <a class="wsus__pro_link" href="product_details.html">--}}
+    {{--                            <img src="images/pro3.jpg" alt="product" class="img-fluid w-100 img_1"/>--}}
+    {{--                            <img src="images/pro3_3.jpg" alt="product" class="img-fluid w-100 img_2"/>--}}
+    {{--                        </a>--}}
+    {{--                        <ul class="wsus__single_pro_icon">--}}
+    {{--                            <li><a href="#" data-bs-toggle="modal" data-bs-target="#exampleModal2"><i--}}
+    {{--                                        class="far fa-eye"></i></a></li>--}}
+    {{--                            <li><a href="#"><i class="far fa-heart"></i></a></li>--}}
+    {{--                            <li><a href="#"><i class="far fa-random"></i></a>--}}
+    {{--                        </ul>--}}
+    {{--                        <div class="wsus__product_details">--}}
+    {{--                            <a class="wsus__category" href="#">Electronics </a>--}}
+    {{--                            <p class="wsus__pro_rating">--}}
+    {{--                                <i class="fas fa-star"></i>--}}
+    {{--                                <i class="fas fa-star"></i>--}}
+    {{--                                <i class="fas fa-star"></i>--}}
+    {{--                                <i class="fas fa-star"></i>--}}
+    {{--                                <i class="fas fa-star-half-alt"></i>--}}
+    {{--                                <span>(133 review)</span>--}}
+    {{--                            </p>--}}
+    {{--                            <a class="wsus__pro_name" href="#">hp 24" FHD monitore</a>--}}
+    {{--                            <p class="wsus__price">$159--}}
+    {{--                                <del>$200</del>--}}
+    {{--                            </p>--}}
+    {{--                            <a class="add_cart" href="#">add to cart</a>--}}
+    {{--                        </div>--}}
+    {{--                    </div>--}}
+    {{--                </div>--}}
+    {{--                <div class="col-xl-3 col-sm-6 col-lg-4">--}}
+    {{--                    <div class="wsus__product_item">--}}
+    {{--                        <span class="wsus__new">New</span>--}}
+    {{--                        <a class="wsus__pro_link" href="product_details.html">--}}
+    {{--                            <img src="images/pro4.jpg" alt="product" class="img-fluid w-100 img_1"/>--}}
+    {{--                            <img src="images/pro4_4.jpg" alt="product" class="img-fluid w-100 img_2"/>--}}
+    {{--                        </a>--}}
+    {{--                        <ul class="wsus__single_pro_icon">--}}
+    {{--                            <li><a href="#" data-bs-toggle="modal" data-bs-target="#exampleModal2"><i--}}
+    {{--                                        class="far fa-eye"></i></a></li>--}}
+    {{--                            <li><a href="#"><i class="far fa-heart"></i></a></li>--}}
+    {{--                            <li><a href="#"><i class="far fa-random"></i></a>--}}
+    {{--                        </ul>--}}
+    {{--                        <div class="wsus__product_details">--}}
+    {{--                            <a class="wsus__category" href="#">fashion </a>--}}
+    {{--                            <p class="wsus__pro_rating">--}}
+    {{--                                <i class="fas fa-star"></i>--}}
+    {{--                                <i class="fas fa-star"></i>--}}
+    {{--                                <i class="fas fa-star"></i>--}}
+    {{--                                <i class="fas fa-star"></i>--}}
+    {{--                                <i class="fas fa-star-half-alt"></i>--}}
+    {{--                                <span>(17 review)</span>--}}
+    {{--                            </p>--}}
+    {{--                            <a class="wsus__pro_name" href="#">men's casual fashion watch</a>--}}
+    {{--                            <p class="wsus__price">$159--}}
+    {{--                                <del>$200</del>--}}
+    {{--                            </p>--}}
+    {{--                            <a class="add_cart" href="#">add to cart</a>--}}
+    {{--                        </div>--}}
+    {{--                    </div>--}}
+    {{--                </div>--}}
+    {{--                <div class="col-xl-3 col-sm-6 col-lg-4">--}}
+    {{--                    <div class="wsus__product_item">--}}
+    {{--                        <span class="wsus__minus">-20%</span>--}}
+    {{--                        <a class="wsus__pro_link" href="product_details.html">--}}
+    {{--                            <img src="images/pro9.jpg" alt="product" class="img-fluid w-100 img_1"/>--}}
+    {{--                            <img src="images/pro9_9.jpg" alt="product" class="img-fluid w-100 img_2"/>--}}
+    {{--                        </a>--}}
+    {{--                        <ul class="wsus__single_pro_icon">--}}
+    {{--                            <li><a href="#" data-bs-toggle="modal" data-bs-target="#exampleModal2"><i--}}
+    {{--                                        class="far fa-eye"></i></a></li>--}}
+    {{--                            <li><a href="#"><i class="far fa-heart"></i></a></li>--}}
+    {{--                            <li><a href="#"><i class="far fa-random"></i></a>--}}
+    {{--                        </ul>--}}
+    {{--                        <div class="wsus__product_details">--}}
+    {{--                            <a class="wsus__category" href="#">fashion </a>--}}
+    {{--                            <p class="wsus__pro_rating">--}}
+    {{--                                <i class="fas fa-star"></i>--}}
+    {{--                                <i class="fas fa-star"></i>--}}
+    {{--                                <i class="fas fa-star"></i>--}}
+    {{--                                <i class="fas fa-star"></i>--}}
+    {{--                                <i class="fas fa-star-half-alt"></i>--}}
+    {{--                                <span>(120 review)</span>--}}
+    {{--                            </p>--}}
+    {{--                            <a class="wsus__pro_name" href="#">men's fashion sholder bag</a>--}}
+    {{--                            <p class="wsus__price">$159--}}
+    {{--                                <del>$200</del>--}}
+    {{--                            </p>--}}
+    {{--                            <a class="add_cart" href="#">add to cart</a>--}}
+    {{--                        </div>--}}
+    {{--                    </div>--}}
+    {{--                </div>--}}
+    {{--                <div class="col-xl-3 col-sm-6 col-lg-4">--}}
+    {{--                    <div class="wsus__product_item">--}}
+    {{--                        <span class="wsus__new">New</span>--}}
+    {{--                        <span class="wsus__minus">-20%</span>--}}
+    {{--                        <a class="wsus__pro_link" href="product_details.html">--}}
+    {{--                            <img src="images/pro2.jpg" alt="product" class="img-fluid w-100 img_1"/>--}}
+    {{--                            <img src="images/pro2_2.jpg" alt="product" class="img-fluid w-100 img_2"/>--}}
+    {{--                        </a>--}}
+    {{--                        <ul class="wsus__single_pro_icon">--}}
+    {{--                            <li><a href="#" data-bs-toggle="modal" data-bs-target="#exampleModal2"><i--}}
+    {{--                                        class="far fa-eye"></i></a></li>--}}
+    {{--                            <li><a href="#"><i class="far fa-heart"></i></a></li>--}}
+    {{--                            <li><a href="#"><i class="far fa-random"></i></a>--}}
+    {{--                        </ul>--}}
+    {{--                        <div class="wsus__product_details">--}}
+    {{--                            <a class="wsus__category" href="#">fashion </a>--}}
+    {{--                            <p class="wsus__pro_rating">--}}
+    {{--                                <i class="fas fa-star"></i>--}}
+    {{--                                <i class="fas fa-star"></i>--}}
+    {{--                                <i class="fas fa-star"></i>--}}
+    {{--                                <i class="fas fa-star"></i>--}}
+    {{--                                <i class="fas fa-star-half-alt"></i>--}}
+    {{--                                <span>(72 review)</span>--}}
+    {{--                            </p>--}}
+    {{--                            <a class="wsus__pro_name" href="#">men's casual shoes</a>--}}
+    {{--                            <p class="wsus__price">$159--}}
+    {{--                                <del>$200</del>--}}
+    {{--                            </p>--}}
+    {{--                            <a class="add_cart" href="#">add to cart</a>--}}
+    {{--                        </div>--}}
+    {{--                    </div>--}}
+    {{--                </div>--}}
+    {{--                <div class="col-xl-3 col-sm-6 col-lg-4">--}}
+    {{--                    <div class="wsus__product_item">--}}
+    {{--                        <span class="wsus__minus">-20%</span>--}}
+    {{--                        <a class="wsus__pro_link" href="product_details.html">--}}
+    {{--                            <img src="images/pro4.jpg" alt="product" class="img-fluid w-100 img_1"/>--}}
+    {{--                            <img src="images/pro4_4.jpg" alt="product" class="img-fluid w-100 img_2"/>--}}
+    {{--                        </a>--}}
+    {{--                        <ul class="wsus__single_pro_icon">--}}
+    {{--                            <li><a href="#" data-bs-toggle="modal" data-bs-target="#exampleModal2"><i--}}
+    {{--                                        class="far fa-eye"></i></a></li>--}}
+    {{--                            <li><a href="#"><i class="far fa-heart"></i></a></li>--}}
+    {{--                            <li><a href="#"><i class="far fa-random"></i></a>--}}
+    {{--                        </ul>--}}
+    {{--                        <div class="wsus__product_details">--}}
+    {{--                            <a class="wsus__category" href="#">fashion </a>--}}
+    {{--                            <p class="wsus__pro_rating">--}}
+    {{--                                <i class="fas fa-star"></i>--}}
+    {{--                                <i class="fas fa-star"></i>--}}
+    {{--                                <i class="fas fa-star"></i>--}}
+    {{--                                <i class="fas fa-star"></i>--}}
+    {{--                                <i class="fas fa-star-half-alt"></i>--}}
+    {{--                                <span>(17 review)</span>--}}
+    {{--                            </p>--}}
+    {{--                            <a class="wsus__pro_name" href="#">men's casual fashion watch</a>--}}
+    {{--                            <p class="wsus__price">$159--}}
+    {{--                                <del>$200</del>--}}
+    {{--                            </p>--}}
+    {{--                            <a class="add_cart" href="#">add to cart</a>--}}
+    {{--                        </div>--}}
+    {{--                    </div>--}}
+    {{--                </div>--}}
 
-{{--            </div>--}}
-{{--        </div>--}}
-{{--    </section>--}}
+    {{--            </div>--}}
+    {{--        </div>--}}
+    {{--    </section>--}}
     <!--============================
         RELATED PRODUCT END
     ==============================-->
 
 @endsection
-
-@push('scripts')
-    <script>
-        $(document).ready(function() {
-            $.ajaxSetup({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                }
-            });
-
-            fetchSidebarCartProducts();
-
-            //add product into cart
-            $('.shopping-cart-form').on('submit', function (e) {
-                e.preventDefault();
-                let formData = $(this).serialize();
-
-                $.ajax({
-                    method: 'POST',
-                    data: formData,
-                    url: "{{route('add-to-cart')}}",
-                    success: function(data) {
-                        getCartCount();
-                        fetchSidebarCartProducts();
-                        getSidebarCartSubtotal();
-                        toastr.success(data.message);
-                    },
-                    error: function() {
-
-                    }
-                })
-            })
-
-            //remove product from sidebar cart
-            $('body').on('click', '.remove_sidebar_product', function(e) {
-                e.preventDefault();
-                let rowId = $(this).data('row-id');
-
-                $.ajax({
-                    method: 'POST',
-                    data: {
-                        rowId: rowId
-                    },
-                    url: "{{route('cart.remove-sidebar-product')}}",
-                    success: function(data) {
-                        getCartCount();
-                        fetchSidebarCartProducts();
-                        getSidebarCartSubtotal();
-
-                        toastr.success(data.message);
-                    },
-                    error: function() {
-
-                    }
-                })
-            });
-
-            //get sidebar cart subtotal
-            function getSidebarCartSubtotal()
-            {
-                $.ajax({
-                    method: 'GET',
-                    url: "{{route('cart-subtotal')}}",
-                    success: function(data) {
-                        $('#mini_cart_subtotal').text("{{$settings->currency_icon}}" + data);
-                    },
-                    error: function() {
-
-                    }
-                })
-            }
-
-            function getCartCount() {
-                $.ajax({
-                    method: 'GET',
-                    url: "{{route('cart-count')}}",
-                    success: function(data) {
-                        $('#cart-count').text(data);
-                    },
-                    error: function() {
-
-                    }
-                })
-            }
-
-            //show products in sidebar cart
-            function fetchSidebarCartProducts() {
-                $.ajax({
-                    method: 'GET',
-                    url: "{{route('cart-products')}}",
-                    success: function(data) {
-                        $('.mini_cart_wrapper').html("");
-                        var html = '';
-                        for (let item in data) {
-                            let product = data[item];
-                            html += `
-                            <li>
-                                <div class="wsus__cart_img">
-                                <a href="{{url("product-detail")}}/${product.options.seo_url}"><img src="{{asset("/")}}${product.options.image}" alt="product" class="img-fluid w-100"></a>
-                                    <a class="wsis__del_icon remove_sidebar_product" data-row-id="${product.rowId}" href="#"><i class="fas fa-minus-circle"></i></a>
-                                </div>
-                                <div class="wsus__cart_text">
-                                    <a class="wsus__cart_title" href="{{url("product-detail")}}/${product.options.seo_url}">${product.name}</a>
-                                    <p>{{$settings->currency_icon}}${product.price}</p>
-                                    <small>Quantity: ${product.qty}</small>
-                                </div>
-                            </li>`;
-                        }
-
-                        if (html !== '') {
-                            $('.mini_cart_wrapper').html(html);
-                            $('.mini_cart_actions').removeClass('d-none');
-                        } else {
-                            $('.mini_cart_wrapper').html('<li>Your shopping cart is empty</li>');
-                            $('.mini_cart_actions').addClass('d-none');
-                        }
-                    },
-                    error: function(error) {
-                        console.log(error);
-                    }
-                })
-            }
-        });
-    </script>
-@endpush
