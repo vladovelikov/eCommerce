@@ -123,10 +123,10 @@
                 <div class="col-xl-3">
                     <div class="wsus__cart_list_footer_button" id="sticky_sidebar">
                         <h6>total cart</h6>
-                        <p>subtotal: <span>$124.00</span></p>
-                        <p>delivery: <span>$00.00</span></p>
-                        <p>discount: <span>$10.00</span></p>
-                        <p class="total"><span>total:</span> <span>$134.00</span></p>
+                        <p>subtotal: <span id="subtotal">{{$settings->currency_icon}}{{getCartSubtotal()}}</span></p>
+                        <p>delivery: <span>{{$settings->currency_icon}}00.00</span></p>
+                        <p>discount: <span>{{$settings->currency_icon}}10.00</span></p>
+                        <p class="total"><span>total:</span> <span>{{$settings->currency_icon}}134.00</span></p>
 
                         <form>
                             <input type="text" placeholder="Coupon Code">
@@ -202,6 +202,7 @@
                         if (response.status === 'success') {
                             let productId = '#' + rowId;
                             $(productId).text("{{$settings->currency_icon}}" + response.totalAmount);
+                            renderCartSubtotalAmount();
                             toastr.success(response.message);
                         } else {
                             toastr.error(response.message);
@@ -231,6 +232,7 @@
                         if (response.status === 'success') {
                             let productId = '#' + rowId;
                             $(productId).text("{{$settings->currency_icon}}" + response.totalAmount);
+                            renderCartSubtotalAmount();
                             toastr.success(response.message);
                         } else {
                             toastr.error(response.message);
@@ -284,6 +286,21 @@
                     }
                 })
             });
+
+            //fetch subtotal amount and render it
+            function renderCartSubtotalAmount()
+            {
+                $.ajax({
+                    method: 'GET',
+                    url: "{{route('cart-subtotal')}}",
+                    success: function(data) {
+                        $('#subtotal').text("{{$settings->currency_icon}}" + data);
+                    },
+                    error: function(data) {
+                        console.log(data)
+                    }
+                })
+            }
 
 
             // $('.quantity-decrement-btn').on('click', function () {

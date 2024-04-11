@@ -40,6 +40,10 @@ class CartController extends Controller
     {
         $cartItems = Cart::content();
 
+        if(count($cartItems) == 0) {
+            return redirect()->route('index');
+        }
+
         return view('frontend.pages.cart-details', compact('cartItems'));
     }
 
