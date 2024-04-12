@@ -128,8 +128,8 @@
                         <p>discount: <span>{{$settings->currency_icon}}10.00</span></p>
                         <p class="total"><span>total:</span> <span>{{$settings->currency_icon}}134.00</span></p>
 
-                        <form>
-                            <input type="text" placeholder="Coupon Code">
+                        <form id="voucher_code">
+                            <input type="text" name="voucher_code" placeholder="Voucher Code">
                             <button type="submit" class="common_btn">apply</button>
                         </form>
                         <a class="common_btn mt-4 w-100 text-center" href="check_out.html">checkout</a>
@@ -301,6 +301,31 @@
                     }
                 })
             }
+
+            //apply voucher code
+            $('#voucher_code').on('submit', function (e) {
+                e.preventDefault();
+                let voucherCode = $(this).find('input').val();
+
+                $.ajax({
+                    method: 'POST',
+                    url: "{{route('apply-voucher')}}",
+                    data: {
+                        voucherCode: voucherCode
+                    },
+                    success: function(data) {
+                        if (data.status === 'success') {
+                            toastr.success(data.message);
+                            renderCartSubtotalAmount();
+                        } else if (data.status === 'error') {
+                            toastr.error(data.message);
+                        }
+                    },
+                    error: function(data) {
+                        console.log(data)
+                    }
+                })
+            });
 
 
             // $('.quantity-decrement-btn').on('click', function () {

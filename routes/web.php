@@ -49,6 +49,7 @@ Route::get('cart-count', [CartController::class, 'getCartCount'])->name('cart-co
 Route::get('cart-products', [CartController::class, 'getCartProducts'])->name('cart-products');
 Route::post('cart/remove-sidebar-product', [CartController::class, 'removeSidebarProduct'])->name('cart.remove-sidebar-product');
 Route::get('cart-subtotal', [CartController::class, 'getCartSubtotal'])->name('cart-subtotal');
+Route::post('apply-voucher', [CartController::class, 'applyVoucher'])->name('apply-voucher');
 
 //User dashboard routes
 Route::group(['middleware' => ['auth', 'verified'], 'prefix' => 'user', 'as' => 'user.'], function () {

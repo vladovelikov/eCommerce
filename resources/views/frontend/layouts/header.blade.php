@@ -48,10 +48,12 @@
             @if (Cart::content()->count() > 0)
                 @foreach (Cart::content() as $cartItem)
                     <li>
-                        <div class="wsus__cart_img">
-                            <a href="{{route('product-details', $cartItem->options->seo_url)}}"><img src="{{asset($cartItem->options->image)}}" alt="product" class="img-fluid w-100"></a>
-                            <a class="wsis__del_icon remove_sidebar_product" data-row-id="{{$cartItem->rowId}}" href="#"><i class="fas fa-minus-circle"></i></a>
-                        </div>
+                        @if ($cartItem->options->seo_url)
+                            <div class="wsus__cart_img">
+                                <a href="{{route('product-details', $cartItem->options->seo_url)}}"><img src="{{asset($cartItem->options->image)}}" alt="product" class="img-fluid w-100"></a>
+                                <a class="wsis__del_icon remove_sidebar_product" data-row-id="{{$cartItem->rowId}}" href="#"><i class="fas fa-minus-circle"></i></a>
+                            </div>
+                        @endif
                         <div class="wsus__cart_text">
                             <a class="wsus__cart_title" href="#">{{$cartItem->name}}</a>
                             <p>{{$settings->currency_icon}}{{$cartItem->price}}</p>

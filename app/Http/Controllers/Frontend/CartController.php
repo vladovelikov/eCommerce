@@ -114,4 +114,33 @@ class CartController extends Controller
 
         return redirect()->route('cart-details');
     }
+
+    /** Adds a voucher to the cart */
+    public function applyVoucher(Request $request)
+    {
+        $voucherCode = $request->input('voucherCode');
+
+        if (!$voucherCode) {
+            return response([
+                'status' => 'error',
+                'message' => 'Voucher code is required!'
+            ]);
+        }
+
+        $cartSubtotal = $this->cartService->getSubtotalAmount();
+        $discount = $this->cartService->applyVoucher($voucherCode, $cartSubtotal);
+
+        if (!$discount) {
+            return response([
+                'status' => 'error',
+                'message' => 'Voucher code is not valid!'
+            ]);
+        }
+
+        return response([
+            'status' => 'success',
+            'message' => 'Voucher applied successfully!',
+            'discount' => $discount
+        ]);
+    }
 }

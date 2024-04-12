@@ -4,7 +4,9 @@ namespace App\Services;
 
 use App\Models\Product;
 use App\Models\ProductVariantItem;
+use App\Models\Voucher;
 use Gloudemans\Shoppingcart\Facades\Cart;
+use Illuminate\Support\Facades\Session;
 
 class CartService
 {
@@ -85,6 +87,32 @@ class CartService
         $totalAmount = $this->calculateProductTotalAmount($rowId);
 
         return $totalAmount;
+    }
+
+    public function applyVoucher($voucherCode, $cartSubtotal)
+    {
+        $voucher = Voucher::where('code', $voucherCode)
+            ->where('status', 1)
+            ->where('valid_from', '<', now())
+            ->where('valid_to', '>', now())
+            ->first();
+
+        if (!$voucher || $voucher->total_used >= $voucher->quantity) {
+            return false;
+        }
+
+        $voucherDiscount = $voucher->discount_type === Voucher::DISCOUNT_TYPE_PERCENTAGE
+            ? $cartSubtotal * ($voucher->discount_value / 100)
+            : $voucher->discount_value;
+
+        Session::put('voucher', [
+            'name' => $voucher->name,
+            'code' => $voucher->code,
+            'discount_type' => $voucher->discount_type,
+            'discount' => $voucherDiscount
+        ]);
+
+        return $voucherDiscount;
     }
 
 }
