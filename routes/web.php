@@ -50,6 +50,7 @@ Route::get('cart-products', [CartController::class, 'getCartProducts'])->name('c
 Route::post('cart/remove-sidebar-product', [CartController::class, 'removeSidebarProduct'])->name('cart.remove-sidebar-product');
 Route::get('cart-subtotal', [CartController::class, 'getCartSubtotal'])->name('cart-subtotal');
 Route::post('apply-voucher', [CartController::class, 'applyVoucher'])->name('apply-voucher');
+Route::get('calculate-discount', [CartController::class, 'calculateDiscount'])->name('calculate-discount');
 
 //User dashboard routes
 Route::group(['middleware' => ['auth', 'verified'], 'prefix' => 'user', 'as' => 'user.'], function () {

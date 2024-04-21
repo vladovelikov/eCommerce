@@ -125,8 +125,8 @@
                         <h6>total cart</h6>
                         <p>subtotal: <span id="subtotal">{{$settings->currency_icon}}{{getCartSubtotal()}}</span></p>
                         <p>delivery: <span>{{$settings->currency_icon}}00.00</span></p>
-                        <p>discount: <span>{{$settings->currency_icon}}10.00</span></p>
-                        <p class="total"><span>total:</span> <span>{{$settings->currency_icon}}134.00</span></p>
+                        <p>discount: <span id="cart_discount">{{$settings->currency_icon}}{{getCartDiscount()}}</span></p>
+                        <p class="total"><span>total:</span> <span id="cart_total">{{$settings->currency_icon}}{{getCartTotal()}}</span></p>
 
                         <form id="voucher_code">
                             <input type="text" name="voucher_code" placeholder="Voucher Code">
@@ -203,6 +203,7 @@
                             let productId = '#' + rowId;
                             $(productId).text("{{$settings->currency_icon}}" + response.totalAmount);
                             renderCartSubtotalAmount();
+                            calculateVoucherDiscount();
                             toastr.success(response.message);
                         } else {
                             toastr.error(response.message);
@@ -233,6 +234,7 @@
                             let productId = '#' + rowId;
                             $(productId).text("{{$settings->currency_icon}}" + response.totalAmount);
                             renderCartSubtotalAmount();
+                            calculateVoucherDiscount();
                             toastr.success(response.message);
                         } else {
                             toastr.error(response.message);
@@ -316,6 +318,7 @@
                     success: function(data) {
                         if (data.status === 'success') {
                             toastr.success(data.message);
+                            calculateVoucherDiscount();
                             renderCartSubtotalAmount();
                         } else if (data.status === 'error') {
                             toastr.error(data.message);
@@ -326,6 +329,25 @@
                     }
                 })
             });
+
+            //calculating voucher discount
+            function calculateVoucherDiscount() {
+                $.ajax({
+                    method: 'GET',
+                    url: "{{route('calculate-discount')}}",
+                    success: function(data) {
+                        if (data.status === 'success') {
+                            $('#cart_discount') .text("{{$settings->currency_icon}}" + data.discount);
+                            $('#cart_total').text("{{$settings->currency_icon}}" + data.cartTotal);
+                        } else if (data.status === 'error') {
+                            toastr.error(data.message);
+                        }
+                    },
+                    error: function(data) {
+                        console.log(data)
+                    }
+                })
+            }
 
 
             // $('.quantity-decrement-btn').on('click', function () {

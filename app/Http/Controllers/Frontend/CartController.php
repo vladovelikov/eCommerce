@@ -86,9 +86,9 @@ class CartController extends Controller
     }
 
     /** Clear all cart products */
-    public function clearCart(Request $request)
+    public function clearCart()
     {
-        Cart::destroy();
+        $this->cartService->clearCart();
 
         return response([
             'status' => 'success',
@@ -128,9 +128,9 @@ class CartController extends Controller
         }
 
         $cartSubtotal = $this->cartService->getSubtotalAmount();
-        $discount = $this->cartService->applyVoucher($voucherCode, $cartSubtotal);
+        $voucherApplied = $this->cartService->applyVoucher($voucherCode, $cartSubtotal);
 
-        if (!$discount) {
+        if (!$voucherApplied) {
             return response([
                 'status' => 'error',
                 'message' => 'Voucher code is not valid!'
@@ -139,8 +139,27 @@ class CartController extends Controller
 
         return response([
             'status' => 'success',
-            'message' => 'Voucher applied successfully!',
-            'discount' => $discount
+            'message' => 'Voucher applied successfully!'
+        ]);
+    }
+
+    /** Calculates voucher discount */
+    public function calculateDiscount()
+    {
+        $cartData = $this->cartService->calculateDiscount();
+
+        if (!$cartData) {
+            return response([
+                'status' => 'false',
+                'message' => 'Error while calculating cart discount!'
+            ]);
+        }
+
+        return response([
+            'status' => 'success',
+            'message' => 'Cart discount calculated successfully!',
+            'cartTotal' => $cartData['subtotal'],
+            'discount' => $cartData['discount']
         ]);
     }
 }

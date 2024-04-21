@@ -101,18 +101,47 @@ class CartService
             return false;
         }
 
-        $voucherDiscount = $voucher->discount_type === Voucher::DISCOUNT_TYPE_PERCENTAGE
-            ? $cartSubtotal * ($voucher->discount_value / 100)
-            : $voucher->discount_value;
+//        $voucherDiscount = $voucher->discount_type === Voucher::DISCOUNT_TYPE_PERCENTAGE
+//            ? $cartSubtotal * ($voucher->discount_value / 100)
+//            : $voucher->discount_value;
 
         Session::put('voucher', [
             'name' => $voucher->name,
             'code' => $voucher->code,
             'discount_type' => $voucher->discount_type,
-            'discount' => $voucherDiscount
+            'discount' => $voucher->discount_value
         ]);
 
-        return $voucherDiscount;
+        return true;
+    }
+
+    public function calculateDiscount()
+    {
+        if (Session::has('voucher')) {
+            $voucher = Session::get('voucher');
+            $cartSubtotal = $this->getSubtotalAmount();
+
+            if ($voucher['discount_type'] == Voucher::DISCOUNT_TYPE_PERCENTAGE) {
+                $cartData['discount'] = round($cartSubtotal * ($voucher['discount'] / 100), 2);
+                $cartData['subtotal'] = round($cartSubtotal - $cartData['discount'], 2);
+            } else {
+                $cartData['discount'] = round($voucher['discount'], 2);
+                $cartData['subtotal'] = round($cartSubtotal - $voucher['discount'], 2);
+            }
+
+            return $cartData;
+        }
+
+        return false;
+    }
+
+    public function clearCart()
+    {
+        Cart::destroy();
+
+        if (Session::has('voucher')) {
+            Session::forget('voucher');
+        }
     }
 
 }

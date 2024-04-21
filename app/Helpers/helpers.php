@@ -1,6 +1,8 @@
 <?php
 
+use App\Models\Voucher;
 use Gloudemans\Shoppingcart\Facades\Cart;
+use Illuminate\Support\Facades\Session;
 
 /** Set Sidebar item active */
 function setActive(array $route)
@@ -60,4 +62,42 @@ function getCartSubtotal()
     }
 
     return $subtotalAmount;
+}
+
+/** Get cart total payable amount */
+function getCartTotal()
+{
+    if (Session::has('voucher')) {
+        $voucher = Session::get('voucher');
+        $cartSubtotal = getCartSubtotal();
+
+        if ($voucher['discount_type'] == Voucher::DISCOUNT_TYPE_PERCENTAGE) {
+            $cartDiscount = round($cartSubtotal * ($voucher['discount'] / 100), 2);
+            $cartTotal = round($cartSubtotal - $cartDiscount, 2);
+        } else {
+            $cartTotal = round($cartSubtotal - $voucher['discount'], 2);
+        }
+
+        return $cartTotal;
+    } else {
+        return getCartSubtotal();
+    }
+}
+
+/** Get cart discount */
+function getCartDiscount()
+{
+    if (Session::has('voucher')) {
+        $voucher = Session::get('voucher');
+        $cartSubtotal = getCartSubtotal();
+
+        if ($voucher['discount_type'] == Voucher::DISCOUNT_TYPE_PERCENTAGE) {
+            return round($cartSubtotal * ($voucher['discount'] / 100), 2);
+        } else {
+            return round($voucher['discount'], 2);
+        }
+
+    } else {
+        return 0;
+    }
 }
