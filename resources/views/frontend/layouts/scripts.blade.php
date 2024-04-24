@@ -62,9 +62,9 @@
         {
             $.ajax({
                 method: 'GET',
-                url: "{{route('cart-subtotal')}}",
+                url: "{{route('cart-total')}}",
                 success: function(data) {
-                    $('#mini_cart_subtotal').text("{{$settings->currency_icon}}" + data);
+                    $('#mini_cart_subtotal').text("{{$settings->currency_icon}}" + data.subtotalAmount);
                 },
                 error: function() {
 

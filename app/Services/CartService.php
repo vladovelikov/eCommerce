@@ -55,7 +55,7 @@ class CartService
         return true;
     }
 
-    public function getSubtotalAmount()
+    public function getTotalAmount()
     {
         $subtotalAmount = 0;
 
@@ -63,7 +63,10 @@ class CartService
             $subtotalAmount += $this->calculateProductTotalAmount($product->rowId);
         }
 
-        return $subtotalAmount;
+        return [
+            'subtotalAmount' => $subtotalAmount,
+            'totalAmount' => getCartTotal()
+        ];
     }
 
     public function calculateProductTotalAmount($rowId)

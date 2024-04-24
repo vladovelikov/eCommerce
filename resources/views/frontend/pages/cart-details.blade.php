@@ -124,17 +124,16 @@
                     <div class="wsus__cart_list_footer_button" id="sticky_sidebar">
                         <h6>total cart</h6>
                         <p>subtotal: <span id="subtotal">{{$settings->currency_icon}}{{getCartSubtotal()}}</span></p>
-                        <p>delivery: <span>{{$settings->currency_icon}}00.00</span></p>
                         <p>discount: <span id="cart_discount">{{$settings->currency_icon}}{{getCartDiscount()}}</span></p>
                         <p class="total"><span>total:</span> <span id="cart_total">{{$settings->currency_icon}}{{getCartTotal()}}</span></p>
 
                         <form id="voucher_code">
-                            <input type="text" name="voucher_code" placeholder="Voucher Code">
+                            <input type="text" name="voucher_code" placeholder="Voucher Code" value="{{session()->has('voucher') ? session()->get('voucher')['code'] : ''}}">
                             <button type="submit" class="common_btn">apply</button>
                         </form>
-                        <a class="common_btn mt-4 w-100 text-center" href="check_out.html">checkout</a>
-                        <a class="common_btn mt-1 w-100 text-center" href="product_grid_view.html"><i
-                                class="fab fa-shopify"></i> go shop</a>
+                        <a class="common_btn mt-4 w-100 text-center" href="{{route('user.checkout')}}">checkout</a>
+                        <a class="common_btn mt-1 w-100 text-center" href="{{route('index')}}"><i
+                                class="fab fa-shopify"></i> keep shopping</a>
                     </div>
                 </div>
             </div>
@@ -294,9 +293,10 @@
             {
                 $.ajax({
                     method: 'GET',
-                    url: "{{route('cart-subtotal')}}",
+                    url: "{{route('cart-total')}}",
                     success: function(data) {
-                        $('#subtotal').text("{{$settings->currency_icon}}" + data);
+                        $('#subtotal').text("{{$settings->currency_icon}}" + data.subtotalAmount);
+                        $('#cart_total').text("{{$settings->currency_icon}}" + data.totalAmount);
                     },
                     error: function(data) {
                         console.log(data)

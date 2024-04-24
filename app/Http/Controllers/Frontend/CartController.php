@@ -80,9 +80,9 @@ class CartController extends Controller
     }
 
     /** Fetch cart subtotal amount */
-    public function getCartSubtotal()
+    public function getCartTotal()
     {
-        return $this->cartService->getSubtotalAmount();
+        return $this->cartService->getTotalAmount();
     }
 
     /** Clear all cart products */
